@@ -1,0 +1,20 @@
+{
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "damage_numbers"
+    }
+  ],
+  "pages": [
+    {
+      "type": "assortedlib:image",
+      "height": 86,
+      "id": "info",
+      "image": "assortedutil:textures/gui/manual/damage_numbers.png",
+      "text": "manual.assortedutil.chapter.damage_numbers.info",
+      "title": "manual.assortedutil.chapter.damage_numbers.info.title",
+      "width": 152
+    }
+  ],
+  "sort_order": 50
+}

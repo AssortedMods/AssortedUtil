@@ -1,0 +1,106 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "rotation": 270,
+          "texture": "#headstone",
+          "uv": [
+            16.0,
+            14.0,
+            14.0,
+            2.0
+          ]
+        },
+        "east": {
+          "texture": "#headstone"
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#headstone",
+          "uv": [
+            2.0,
+            1.0,
+            14.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#headstone",
+          "uv": [
+            2.0,
+            1.0,
+            14.0,
+            16.0
+          ]
+        },
+        "up": {
+          "rotation": 90,
+          "texture": "#headstone",
+          "uv": [
+            0.0,
+            2.0,
+            2.0,
+            14.0
+          ]
+        },
+        "west": {
+          "texture": "#headstone"
+        }
+      },
+      "from": [
+        1,
+        0,
+        0
+      ],
+      "to": [
+        15,
+        15,
+        2
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#cover",
+          "uv": [
+            14.0,
+            15.0,
+            2.0,
+            2.0
+          ]
+        },
+        "east": {
+          "texture": "#cover"
+        },
+        "south": {
+          "texture": "#cover"
+        },
+        "up": {
+          "texture": "#cover"
+        },
+        "west": {
+          "texture": "#cover"
+        }
+      },
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        1,
+        15
+      ]
+    }
+  ],
+  "textures": {
+    "cover": "assortedutil:block/grave_cover",
+    "headstone": "assortedutil:block/grave_headstone",
+    "particle": "assortedutil:block/grave_headstone"
+  }
+}

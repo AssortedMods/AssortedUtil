@@ -1,0 +1,20 @@
+{
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "time"
+    }
+  ],
+  "pages": [
+    {
+      "type": "assortedlib:image",
+      "height": 86,
+      "id": "info",
+      "image": "assortedutil:textures/gui/manual/time.png",
+      "text": "manual.assortedutil.chapter.time.info",
+      "title": "manual.assortedutil.chapter.time.info.title",
+      "width": 152
+    }
+  ],
+  "sort_order": 30
+}

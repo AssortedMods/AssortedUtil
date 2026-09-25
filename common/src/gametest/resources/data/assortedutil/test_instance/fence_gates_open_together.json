@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assortedutil:fence_gates_open_together",
+  "structure": "assortedutil:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

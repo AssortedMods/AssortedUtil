@@ -1,0 +1,20 @@
+{
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "light_overlay"
+    }
+  ],
+  "pages": [
+    {
+      "type": "assortedlib:image",
+      "height": 86,
+      "id": "info",
+      "image": "assortedutil:textures/gui/manual/light_overlay.png",
+      "text": "manual.assortedutil.chapter.light_overlay.info",
+      "title": "manual.assortedutil.chapter.light_overlay.info.title",
+      "width": 152
+    }
+  ],
+  "sort_order": 40
+}

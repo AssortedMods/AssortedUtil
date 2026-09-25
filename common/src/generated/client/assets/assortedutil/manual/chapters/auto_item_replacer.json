@@ -1,0 +1,20 @@
+{
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "auto_item_replacer"
+    }
+  ],
+  "pages": [
+    {
+      "type": "assortedlib:image",
+      "height": 86,
+      "id": "info",
+      "image": "assortedutil:textures/gui/manual/auto_item_replacer.png",
+      "text": "manual.assortedutil.chapter.auto_item_replacer.info",
+      "title": "manual.assortedutil.chapter.auto_item_replacer.info.title",
+      "width": 152
+    }
+  ],
+  "sort_order": 20
+}
