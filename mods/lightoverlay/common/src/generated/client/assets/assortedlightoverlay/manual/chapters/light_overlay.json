@@ -1,0 +1,13 @@
+{
+  "pages": [
+    {
+      "type": "assortedlib:image",
+      "height": 86,
+      "id": "info",
+      "image": "assortedlightoverlay:textures/gui/manual/light_overlay.png",
+      "text": "manual.assortedlightoverlay.chapter.light_overlay.info",
+      "title": "manual.assortedlightoverlay.chapter.light_overlay.info.title",
+      "width": 152
+    }
+  ]
+}

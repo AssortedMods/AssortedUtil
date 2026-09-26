@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assortedgraves:grave_puts_things_back_in_their_slots",
+  "structure": "assortedgraves:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assortedgraves:grave_takes_what_a_death_drops",
+  "structure": "assortedgraves:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

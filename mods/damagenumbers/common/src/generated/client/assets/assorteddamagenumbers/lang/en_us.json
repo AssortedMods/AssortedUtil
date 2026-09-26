@@ -1,0 +1,20 @@
+{
+  "hud.assorteddamagenumbers.damage.cactus": "Cactus",
+  "hud.assorteddamagenumbers.damage.drowning": "Drowning",
+  "hud.assorteddamagenumbers.damage.explosion": "Explosion",
+  "hud.assorteddamagenumbers.damage.fall": "Fall",
+  "hud.assorteddamagenumbers.damage.fire": "Fire",
+  "hud.assorteddamagenumbers.damage.freezing": "Freezing",
+  "hud.assorteddamagenumbers.damage.generic": "Generic",
+  "hud.assorteddamagenumbers.damage.healing": "Heal",
+  "hud.assorteddamagenumbers.damage.lightning": "Lightning",
+  "hud.assorteddamagenumbers.damage.magic": "Magic",
+  "hud.assorteddamagenumbers.damage.melee": "Melee",
+  "hud.assorteddamagenumbers.damage.projectile": "Projectile",
+  "hud.assorteddamagenumbers.damage.starvation": "Starvation",
+  "manual.assorteddamagenumbers.chapter.damage_numbers": "Damage Numbers",
+  "manual.assorteddamagenumbers.chapter.damage_numbers.info": "Damage and healing pop off creatures as numbers, with what caused it beside them.\n\nA hit by a player will say the weapon, and a hit by a creature names the creature.",
+  "manual.assorteddamagenumbers.chapter.damage_numbers.info.title": "Damage Numbers",
+  "manual.assorteddamagenumbers.description": "Damage and healing pop off creatures as numbers, with what caused them.",
+  "manual.assorteddamagenumbers.title": "Assorted Damage Numbers"
+}

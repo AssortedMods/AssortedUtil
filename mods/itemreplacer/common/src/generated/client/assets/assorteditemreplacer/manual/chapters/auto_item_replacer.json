@@ -1,0 +1,13 @@
+{
+  "pages": [
+    {
+      "type": "assortedlib:image",
+      "height": 86,
+      "id": "info",
+      "image": "assorteditemreplacer:textures/gui/manual/auto_item_replacer.png",
+      "text": "manual.assorteditemreplacer.chapter.auto_item_replacer.info",
+      "title": "manual.assorteditemreplacer.chapter.auto_item_replacer.info.title",
+      "width": 152
+    }
+  ]
+}

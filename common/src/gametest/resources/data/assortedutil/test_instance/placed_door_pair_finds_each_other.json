@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:function",
-  "environment": "minecraft:default",
-  "function": "assortedutil:placed_door_pair_finds_each_other",
-  "structure": "assortedutil:test_box",
-  "max_ticks": 1,
-  "setup_ticks": 0,
-  "required": true
-}

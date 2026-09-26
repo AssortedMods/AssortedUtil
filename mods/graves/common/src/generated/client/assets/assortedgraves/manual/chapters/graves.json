@@ -1,0 +1,22 @@
+{
+  "pages": [
+    {
+      "type": "assortedlib:image",
+      "height": 86,
+      "id": "info",
+      "image": "assortedgraves:textures/gui/manual/grave.png",
+      "text": "manual.assortedgraves.chapter.graves.info",
+      "title": "manual.assortedgraves.chapter.graves.info.title",
+      "width": 152
+    },
+    {
+      "type": "assortedlib:image",
+      "height": 86,
+      "id": "restore",
+      "image": "assortedgraves:textures/gui/manual/grave_restore.png",
+      "text": "manual.assortedgraves.chapter.graves.restore",
+      "title": "manual.assortedgraves.chapter.graves.restore.title",
+      "width": 152
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "pages": [
+    {
+      "type": "assortedlib:image",
+      "height": 86,
+      "id": "info",
+      "image": "assorteddamagenumbers:textures/gui/manual/damage_numbers.png",
+      "text": "manual.assorteddamagenumbers.chapter.damage_numbers.info",
+      "title": "manual.assorteddamagenumbers.chapter.damage_numbers.info.title",
+      "width": 152
+    }
+  ]
+}

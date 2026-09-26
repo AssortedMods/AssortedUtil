@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assorteddoubledoors:double_door_opens_and_closes_together",
+  "structure": "assorteddoubledoors:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

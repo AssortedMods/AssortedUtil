@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assortedgraves:grave_outlasts_an_explosion",
+  "structure": "assortedgraves:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

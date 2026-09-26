@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assortedgraves:grave_experience_matches_vanilla_levels",
+  "structure": "assortedgraves:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

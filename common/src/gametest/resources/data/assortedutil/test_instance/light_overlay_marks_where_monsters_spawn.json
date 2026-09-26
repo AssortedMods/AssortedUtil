@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:function",
-  "environment": "minecraft:default",
-  "function": "assortedutil:light_overlay_marks_where_monsters_spawn",
-  "structure": "assortedutil:test_box",
-  "max_ticks": 100,
-  "setup_ticks": 0,
-  "required": true
-}

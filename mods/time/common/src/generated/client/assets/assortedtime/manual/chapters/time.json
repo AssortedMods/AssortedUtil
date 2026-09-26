@@ -1,0 +1,13 @@
+{
+  "pages": [
+    {
+      "type": "assortedlib:image",
+      "height": 86,
+      "id": "info",
+      "image": "assortedtime:textures/gui/manual/time.png",
+      "text": "manual.assortedtime.chapter.time.info",
+      "title": "manual.assortedtime.chapter.time.info.title",
+      "width": 152
+    }
+  ]
+}

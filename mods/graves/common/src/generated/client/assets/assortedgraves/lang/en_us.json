@@ -1,0 +1,13 @@
+{
+  "block.assortedgraves.grave": "Grave",
+  "manual.assortedgraves.chapter.graves": "Graves",
+  "manual.assortedgraves.chapter.graves.info": "When you die, everything you carried and all of your experience goes into a grave where you died.\n\nItems with Curse of Vanishing still vanish.",
+  "manual.assortedgraves.chapter.graves.info.title": "Graves",
+  "manual.assortedgraves.chapter.graves.restore": "Right-click on your grave to get everything back where it was.\n\nBreaking it spills it all on the ground instead. Explosions, pistons and bosses cannot move or break a grave.",
+  "manual.assortedgraves.chapter.graves.restore.title": "Getting It Back",
+  "manual.assortedgraves.description": "Where you die, everything you carried and all your experience go into a grave, and come back to the slots they came from.",
+  "manual.assortedgraves.title": "Assorted Graves",
+  "message.assortedgraves.grave.dug": "Your belongings are in a grave at %s, %s, %s.",
+  "message.assortedgraves.grave.no_room": "There was no room for a grave, so your belongings were dropped.",
+  "message.assortedgraves.grave.not_yours": "This is %s's grave."
+}

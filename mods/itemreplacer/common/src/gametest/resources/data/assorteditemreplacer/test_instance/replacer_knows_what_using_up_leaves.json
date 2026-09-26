@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assorteditemreplacer:replacer_knows_what_using_up_leaves",
+  "structure": "assorteditemreplacer:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

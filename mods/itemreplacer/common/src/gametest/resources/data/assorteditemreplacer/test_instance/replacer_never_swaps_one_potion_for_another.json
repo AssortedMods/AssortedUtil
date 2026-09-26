@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assorteditemreplacer:replacer_never_swaps_one_potion_for_another",
+  "structure": "assorteditemreplacer:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

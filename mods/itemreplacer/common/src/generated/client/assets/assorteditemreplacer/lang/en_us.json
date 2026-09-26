@@ -1,0 +1,7 @@
+{
+  "manual.assorteditemreplacer.chapter.auto_item_replacer": "Item Replacer",
+  "manual.assorteditemreplacer.chapter.auto_item_replacer.info": "When the stack in your hand runs out or your tool breaks, another from your inventory takes its place.",
+  "manual.assorteditemreplacer.chapter.auto_item_replacer.info.title": "Item Replacer",
+  "manual.assorteditemreplacer.description": "When the stack in your hand runs out or your tool breaks, a match from your inventory takes its place.",
+  "manual.assorteditemreplacer.title": "Assorted Item Replacer"
+}

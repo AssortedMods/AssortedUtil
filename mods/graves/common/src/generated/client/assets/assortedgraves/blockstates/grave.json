@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "assortedgraves:block/grave",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "assortedgraves:block/grave",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "assortedgraves:block/grave"
+    },
+    "facing=west": {
+      "model": "assortedgraves:block/grave",
+      "y": 90
+    }
+  }
+}
