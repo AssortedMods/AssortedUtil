@@ -4,7 +4,7 @@
       "blocks": [
         "assortedgraves:grave"
       ],
-      "page": "assortedgraves:graves/info"
+      "page": "assortedutil:graves/info"
     }
   ]
 }

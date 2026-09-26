@@ -24,14 +24,14 @@ public class TimeLanguageProvider extends LibLanguageProvider {
         this.addManual();
     }
 
-    /** The chapters in {@code assets/assortedtime/manual} name these keys. */
+    /** The chapters in {@code assets/assortedutil/manual} name these keys. */
     private void addManual() {
-        this.add("manual.assortedtime.title", "Assorted Time");
-        this.add("manual.assortedtime.description", "A key that slides down a clock with the time in the world, the time where you are, or both.");
+        this.add("manual.assortedutil.title", "Assorted Util");
+        this.add("manual.assortedutil.description", "Graves, double doors, an item replacer, a clock, a light level overlay and damage numbers.");
 
-        this.add("manual.assortedtime.chapter.time", "Time");
-        this.add("manual.assortedtime.chapter.time.info.title", "Time");
-        this.add("manual.assortedtime.chapter.time.info",
+        this.add("manual.assortedutil.chapter.time", "Time");
+        this.add("manual.assortedutil.chapter.time.info.title", "Time");
+        this.add("manual.assortedutil.chapter.time.info",
                 "Press the key default \"H\" to slide down a clock with the day and time in the world. Press it again for the date and time where you are, press it again for both, and once more to hide it." + BREAK
                         + "In the Nether the world's time cannot be told.");
     }

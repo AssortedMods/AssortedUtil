@@ -5,9 +5,10 @@
       "height": 86,
       "id": "info",
       "image": "assorteditemreplacer:textures/gui/manual/auto_item_replacer.png",
-      "text": "manual.assorteditemreplacer.chapter.auto_item_replacer.info",
-      "title": "manual.assorteditemreplacer.chapter.auto_item_replacer.info.title",
+      "text": "manual.assortedutil.chapter.auto_item_replacer.info",
+      "title": "manual.assortedutil.chapter.auto_item_replacer.info.title",
       "width": 152
     }
-  ]
+  ],
+  "sort_order": 20
 }

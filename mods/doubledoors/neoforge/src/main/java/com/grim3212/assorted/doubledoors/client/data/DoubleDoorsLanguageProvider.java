@@ -21,14 +21,14 @@ public class DoubleDoorsLanguageProvider extends LibLanguageProvider {
         this.addManual();
     }
 
-    /** The chapters in {@code assets/assorteddoubledoors/manual} name these keys. */
+    /** The chapters in {@code assets/assortedutil/manual} name these keys. */
     private void addManual() {
-        this.add("manual.assorteddoubledoors.title", "Assorted Double Doors");
-        this.add("manual.assorteddoubledoors.description", "One click opens both doors of a pair, a whole trapdoor hatch, or a run of fence gates.");
+        this.add("manual.assortedutil.title", "Assorted Util");
+        this.add("manual.assortedutil.description", "Graves, double doors, an item replacer, a clock, a light level overlay and damage numbers.");
 
-        this.add("manual.assorteddoubledoors.chapter.double_doors", "Double Doors");
-        this.add("manual.assorteddoubledoors.chapter.double_doors.info.title", "Double Doors");
-        this.add("manual.assorteddoubledoors.chapter.double_doors.info",
+        this.add("manual.assortedutil.chapter.double_doors", "Double Doors");
+        this.add("manual.assortedutil.chapter.double_doors.info.title", "Double Doors");
+        this.add("manual.assortedutil.chapter.double_doors.info",
                 "You can have two doors side by side and opening one door will open the other. The same goes for a large group of trapdoors, and for fence gates stacked on or beside each other." + BREAK
                         + "Sneak to open just one. Doors, trapdoors and gates from other mods should work too.");
     }

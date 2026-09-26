@@ -1,12 +1,12 @@
 package com.grim3212.assorted.graves.client.data;
 
+import com.grim3212.assorted.graves.Family;
 import com.grim3212.assorted.lib.data.LibManualProvider;
 import com.grim3212.assorted.graves.Constants;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.Items;
 
-/** This mod's section of the instruction manual. */
+/** This mod's chapter of the Assorted Util section, which every Util mod shares. */
 public class GravesManualProvider extends LibManualProvider {
 
     /** Every picture is the page's full width, 16:9, as in the other Assorted manuals. */
@@ -14,15 +14,14 @@ public class GravesManualProvider extends LibManualProvider {
     private static final int PICTURE_HEIGHT = 86;
 
     public GravesManualProvider(PackOutput output) {
-        super(output, Constants.MOD_ID);
+        super(output, Constants.MOD_ID, Family.ID);
     }
 
     @Override
     protected void addChapters() {
-        // A grave has no item to stand for it, so a skull does.
-        this.section(160, Items.SKELETON_SKULL);
+        this.section(Family.MANUAL_ORDER, Family.ICONS.toArray(Identifier[]::new));
 
-        ChapterBuilder graves = this.chapter("graves");
+        ChapterBuilder graves = this.chapter("graves", 0);
         graves.image("info", picture("grave"), PICTURE_WIDTH, PICTURE_HEIGHT).opensBlocks(Identifier.fromNamespaceAndPath(Constants.MOD_ID, "grave"));
         graves.image("restore", picture("grave_restore"), PICTURE_WIDTH, PICTURE_HEIGHT);
     }

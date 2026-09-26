@@ -5,9 +5,10 @@
       "height": 86,
       "id": "info",
       "image": "assorteddoubledoors:textures/gui/manual/double_doors.png",
-      "text": "manual.assorteddoubledoors.chapter.double_doors.info",
-      "title": "manual.assorteddoubledoors.chapter.double_doors.info.title",
+      "text": "manual.assortedutil.chapter.double_doors.info",
+      "title": "manual.assortedutil.chapter.double_doors.info.title",
       "width": 152
     }
-  ]
+  ],
+  "sort_order": 10
 }

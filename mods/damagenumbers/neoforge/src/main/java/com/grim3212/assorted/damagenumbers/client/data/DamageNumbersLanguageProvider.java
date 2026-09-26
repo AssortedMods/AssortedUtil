@@ -33,14 +33,14 @@ public class DamageNumbersLanguageProvider extends LibLanguageProvider {
         this.addManual();
     }
 
-    /** The chapters in {@code assets/assorteddamagenumbers/manual} name these keys. */
+    /** The chapters in {@code assets/assortedutil/manual} name these keys. */
     private void addManual() {
-        this.add("manual.assorteddamagenumbers.title", "Assorted Damage Numbers");
-        this.add("manual.assorteddamagenumbers.description", "Damage and healing pop off creatures as numbers, with what caused them.");
+        this.add("manual.assortedutil.title", "Assorted Util");
+        this.add("manual.assortedutil.description", "Graves, double doors, an item replacer, a clock, a light level overlay and damage numbers.");
 
-        this.add("manual.assorteddamagenumbers.chapter.damage_numbers", "Damage Numbers");
-        this.add("manual.assorteddamagenumbers.chapter.damage_numbers.info.title", "Damage Numbers");
-        this.add("manual.assorteddamagenumbers.chapter.damage_numbers.info",
+        this.add("manual.assortedutil.chapter.damage_numbers", "Damage Numbers");
+        this.add("manual.assortedutil.chapter.damage_numbers.info.title", "Damage Numbers");
+        this.add("manual.assortedutil.chapter.damage_numbers.info",
                 "Damage and healing pop off creatures as numbers, with what caused it beside them." + BREAK
                         + "A hit by a player will say the weapon, and a hit by a creature names the creature.");
     }

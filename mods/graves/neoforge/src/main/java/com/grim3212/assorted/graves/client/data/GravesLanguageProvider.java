@@ -26,18 +26,18 @@ public class GravesLanguageProvider extends LibLanguageProvider {
         this.addManual();
     }
 
-    /** The chapters in {@code assets/assortedgraves/manual} name these keys. */
+    /** The chapters in {@code assets/assortedutil/manual} name these keys. */
     private void addManual() {
-        this.add("manual.assortedgraves.title", "Assorted Graves");
-        this.add("manual.assortedgraves.description", "Where you die, everything you carried and all your experience go into a grave, and come back to the slots they came from.");
+        this.add("manual.assortedutil.title", "Assorted Util");
+        this.add("manual.assortedutil.description", "Graves, double doors, an item replacer, a clock, a light level overlay and damage numbers.");
 
-        this.add("manual.assortedgraves.chapter.graves", "Graves");
-        this.add("manual.assortedgraves.chapter.graves.info.title", "Graves");
-        this.add("manual.assortedgraves.chapter.graves.info",
+        this.add("manual.assortedutil.chapter.graves", "Graves");
+        this.add("manual.assortedutil.chapter.graves.info.title", "Graves");
+        this.add("manual.assortedutil.chapter.graves.info",
                 "When you die, everything you carried and all of your experience goes into a grave where you died." + BREAK
                         + "Items with Curse of Vanishing still vanish.");
-        this.add("manual.assortedgraves.chapter.graves.restore.title", "Getting It Back");
-        this.add("manual.assortedgraves.chapter.graves.restore",
+        this.add("manual.assortedutil.chapter.graves.restore.title", "Getting It Back");
+        this.add("manual.assortedutil.chapter.graves.restore",
                 "Right-click on your grave to get everything back where it was." + BREAK
                         + "Breaking it spills it all on the ground instead. Explosions, pistons and bosses cannot move or break a grave.");
     }

@@ -3,9 +3,9 @@
   "hud.assortedlightoverlay.light_overlay.on": "Light level overlay on",
   "key.assortedlightoverlay.toggle_light_overlay": "Light Level Overlay",
   "key.category.assortedlightoverlay.general": "Assorted Light Overlay",
-  "manual.assortedlightoverlay.chapter.light_overlay": "Light Overlay",
-  "manual.assortedlightoverlay.chapter.light_overlay.info": "Press the key default \"F7\" to show the block light on the ground around you.\n\nRed is where a monster can spawn at any time, yellow where one can only at night or a storm, and green where one never can.",
-  "manual.assortedlightoverlay.chapter.light_overlay.info.title": "Light Overlay",
-  "manual.assortedlightoverlay.description": "A key that shows the light level wherever a monster could spawn.",
-  "manual.assortedlightoverlay.title": "Assorted Light Overlay"
+  "manual.assortedutil.chapter.light_overlay": "Light Overlay",
+  "manual.assortedutil.chapter.light_overlay.info": "Press the key default \"F7\" to show the block light on the ground around you.\n\nRed is where a monster can spawn at any time, yellow where one can only at night or a storm, and green where one never can.",
+  "manual.assortedutil.chapter.light_overlay.info.title": "Light Overlay",
+  "manual.assortedutil.description": "Graves, double doors, an item replacer, a clock, a light level overlay and damage numbers.",
+  "manual.assortedutil.title": "Assorted Util"
 }

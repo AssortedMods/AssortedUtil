@@ -1,12 +1,12 @@
 package com.grim3212.assorted.itemreplacer.client.data;
 
+import com.grim3212.assorted.itemreplacer.Family;
 import com.grim3212.assorted.lib.data.LibManualProvider;
 import com.grim3212.assorted.itemreplacer.Constants;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.Items;
 
-/** This mod's section of the instruction manual. */
+/** This mod's chapter of the Assorted Util section, which every Util mod shares. */
 public class ItemReplacerManualProvider extends LibManualProvider {
 
     /** Every picture is the page's full width, 16:9, as in the other Assorted manuals. */
@@ -14,15 +14,14 @@ public class ItemReplacerManualProvider extends LibManualProvider {
     private static final int PICTURE_HEIGHT = 86;
 
     public ItemReplacerManualProvider(PackOutput output) {
-        super(output, Constants.MOD_ID);
+        super(output, Constants.MOD_ID, Family.ID);
     }
 
     @Override
     protected void addChapters() {
-        // The item replacer adds no items, so a tool it would replace stands for it.
-        this.section(162, Items.IRON_PICKAXE);
+        this.section(Family.MANUAL_ORDER, Family.ICONS.toArray(Identifier[]::new));
 
-        this.chapter("auto_item_replacer").image("info", picture("auto_item_replacer"), PICTURE_WIDTH, PICTURE_HEIGHT);
+        this.chapter("auto_item_replacer", 20).image("info", picture("auto_item_replacer"), PICTURE_WIDTH, PICTURE_HEIGHT);
     }
 
     /** In-game screenshots under {@code textures/gui/manual}, taken with AssortedUtil-photos beside this repository. */

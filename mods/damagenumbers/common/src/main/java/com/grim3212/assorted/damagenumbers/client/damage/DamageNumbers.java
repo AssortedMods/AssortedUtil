@@ -98,7 +98,7 @@ public final class DamageNumbers {
             if (change < 0.0F) {
                 DamageSource source = now - recentSourceTimes.getOrDefault(living.getId(), Long.MIN_VALUE / 2) <= SOURCE_MEMORY_TICKS ? recentSources.get(living.getId()) : null;
                 DamageKind kind = DamageKind.of(source);
-                spawn(minecraft, level, living, "-" + DamagePopup.amount(-change), label(kind, source), kind.color());
+                spawn(minecraft, level, living, "-" + DamagePopup.amount(-change), label(kind, source), kind.color(source));
             } else if (DamageNumbersClient.CONFIG.damageNumbersShowHealing.get()) {
                 spawn(minecraft, level, living, "+" + DamagePopup.amount(change), DamageKind.HEALING.label(), DamageKind.HEALING.color());
             }
@@ -140,7 +140,7 @@ public final class DamageNumbers {
         if (source != null && kind == DamageKind.PROJECTILE && source.getDirectEntity() != null) {
             return source.getDirectEntity().getName();
         }
-        return kind.label();
+        return kind.label(source);
     }
 
     public static void submit(PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
