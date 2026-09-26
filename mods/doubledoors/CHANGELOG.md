@@ -2,6 +2,8 @@
 
 ## 1.0.0
 
-First release, for Minecraft 26.2 on NeoForge and Fabric.
-
-- Double doors, trapdoor hatches and runs of fence gates open together.
+- First release
+- Opening one door of a double door opens the other one too
+- Works for trapdoors and fence gates
+- Sneak to open just one
+- Requires Assorted Lib 4.3.0

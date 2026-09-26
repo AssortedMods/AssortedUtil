@@ -2,6 +2,6 @@
 
 ## 1.0.0
 
-First release, for Minecraft 26.2 on NeoForge and Fabric.
-
-- A light level overlay on F7, marking where monsters can spawn.
+- First release
+- Press F7 to see light levels where mobs can spawn
+- Requires Assorted Lib 4.3.0

@@ -2,6 +2,6 @@
 
 ## 1.0.0
 
-First release, for Minecraft 26.2 on NeoForge and Fabric.
-
-- Refills the selected hotbar slot when a tool breaks or a block or item runs out.
+- First release
+- When a tool breaks or a stack runs out, the same item from your inventory takes its place
+- Requires Assorted Lib 4.3.0

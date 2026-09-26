@@ -2,8 +2,7 @@
 
 ## 1.0.0
 
-First release, for Minecraft 26.2 on NeoForge and Fabric.
-
-- Graves put each item back in the slot it came from, armour included, and keep every point of
-  experience.
-- Items with Curse of Vanishing still vanish, and a totem of undying keeps you out of a grave.
+- First release
+- Your items and experience go into a grave when you die
+- Right click the grave to get everything back in the same slots
+- Requires Assorted Lib 4.3.0
