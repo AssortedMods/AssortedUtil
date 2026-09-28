@@ -18,5 +18,6 @@ public final class GravesGameTests {
     public static void forEach(BiConsumer<String, Consumer<GameTestHelper>> out) {
         SmokeTests.register(out);
         GraveTests.register(out);
+        FamilyTests.register(out);
     }
 }

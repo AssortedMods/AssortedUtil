@@ -2,7 +2,6 @@ package com.grim3212.assorted.lightoverlay.client.data;
 
 import com.grim3212.assorted.lib.data.LibManualProvider;
 import com.grim3212.assorted.lightoverlay.Constants;
-import com.grim3212.assorted.lightoverlay.Family;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 
@@ -14,13 +13,11 @@ public class LightOverlayManualProvider extends LibManualProvider {
     private static final int PICTURE_HEIGHT = 86;
 
     public LightOverlayManualProvider(PackOutput output) {
-        super(output, Constants.MOD_ID, Family.ID);
+        super(output, Constants.MOD_ID, Constants.FAMILY_ID);
     }
 
     @Override
     protected void addChapters() {
-        this.section(Family.MANUAL_ORDER, Family.ICONS.toArray(Identifier[]::new));
-
         this.chapter("light_overlay", 40).image("info", picture("light_overlay"), PICTURE_WIDTH, PICTURE_HEIGHT);
     }
 

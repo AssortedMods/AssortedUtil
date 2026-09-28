@@ -1,6 +1,8 @@
 package com.grim3212.assorted.damagenumbers.client.damage;
 
+import com.grim3212.assorted.damagenumbers.Constants;
 import com.grim3212.assorted.damagenumbers.client.DamageNumbersClient;
+import com.grim3212.assorted.lib.conditions.PartToggles;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2LongOpenHashMap;
@@ -64,7 +66,7 @@ public final class DamageNumbers {
         ClientLevel level = minecraft.level;
         LocalPlayer player = minecraft.player;
         // Entity ids start over in each level.
-        if (level != trackedLevel || level == null || player == null) {
+        if (level != trackedLevel || level == null || player == null || !PartToggles.isEnabled(Constants.MOD_ID)) {
             trackedLevel = level;
             lastHealth.clear();
             recentSources.clear();

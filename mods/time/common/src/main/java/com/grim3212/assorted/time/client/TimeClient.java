@@ -1,5 +1,7 @@
 package com.grim3212.assorted.time.client;
 
+import com.grim3212.assorted.lib.conditions.PartToggles;
+import com.grim3212.assorted.lib.family.Families;
 import com.grim3212.assorted.lib.platform.ClientServices;
 import com.grim3212.assorted.time.Constants;
 import com.grim3212.assorted.time.client.time.TimeHud;
@@ -18,6 +20,10 @@ public class TimeClient {
     public static KeyMapping TOGGLE_TIME;
 
     public static void init() {
+        Families.join(Constants.MOD_ID, Constants.FAMILY_ID)
+                .icon(Identifier.withDefaultNamespace("clock"), 10)
+                .manualOrder(160);
+
         // G, the 1.12 time key, is vanilla's quick actions now.
         TOGGLE_TIME = ClientServices.KEYBINDS.createNew("key.assortedtime.toggle_time", ClientServices.KEYBINDS.getInGameKeyConflictContext(), InputConstants.Type.KEYSYM, InputConstants.KEY_H, KEY_CATEGORY);
         ClientServices.CLIENT.registerKeyMapping(TOGGLE_TIME);
@@ -27,6 +33,10 @@ public class TimeClient {
     }
 
     private static void tick(Minecraft minecraft) {
+        if (!PartToggles.isEnabled(Constants.MOD_ID)) {
+            return;
+        }
+
         while (TOGGLE_TIME.consumeClick()) {
             TimeHud.cycle();
         }

@@ -1,5 +1,7 @@
 package com.grim3212.assorted.lightoverlay.client.light;
 
+import com.grim3212.assorted.lib.conditions.PartToggles;
+import com.grim3212.assorted.lightoverlay.Constants;
 import com.grim3212.assorted.lightoverlay.client.LightOverlayClient;
 import com.grim3212.assorted.lightoverlay.common.light.SpawnLight;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -74,7 +76,7 @@ public final class LightOverlay {
     /** Scans a slice of the circle each tick, and swaps the new markers in once the whole circle is done. */
     public static void tick(Minecraft minecraft) {
         LocalPlayer player = minecraft.player;
-        if (!shown || player == null || minecraft.level == null) {
+        if (!shown || !PartToggles.isEnabled(Constants.MOD_ID) || player == null || minecraft.level == null) {
             markers = List.of();
             building = null;
             return;

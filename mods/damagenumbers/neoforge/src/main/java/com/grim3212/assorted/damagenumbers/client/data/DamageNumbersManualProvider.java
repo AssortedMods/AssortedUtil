@@ -1,6 +1,5 @@
 package com.grim3212.assorted.damagenumbers.client.data;
 
-import com.grim3212.assorted.damagenumbers.Family;
 import com.grim3212.assorted.lib.data.LibManualProvider;
 import com.grim3212.assorted.damagenumbers.Constants;
 import net.minecraft.data.PackOutput;
@@ -14,13 +13,11 @@ public class DamageNumbersManualProvider extends LibManualProvider {
     private static final int PICTURE_HEIGHT = 86;
 
     public DamageNumbersManualProvider(PackOutput output) {
-        super(output, Constants.MOD_ID, Family.ID);
+        super(output, Constants.MOD_ID, Constants.FAMILY_ID);
     }
 
     @Override
     protected void addChapters() {
-        this.section(Family.MANUAL_ORDER, Family.ICONS.toArray(Identifier[]::new));
-
         this.chapter("damage_numbers", 50).image("info", picture("damage_numbers"), PICTURE_WIDTH, PICTURE_HEIGHT);
     }
 

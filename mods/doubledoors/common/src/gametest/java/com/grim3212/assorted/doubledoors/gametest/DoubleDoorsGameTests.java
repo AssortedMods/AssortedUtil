@@ -18,5 +18,6 @@ public final class DoubleDoorsGameTests {
     public static void forEach(BiConsumer<String, Consumer<GameTestHelper>> out) {
         SmokeTests.register(out);
         DoubleDoorTests.register(out);
+        FamilyTests.register(out);
     }
 }

@@ -1,6 +1,5 @@
 package com.grim3212.assorted.itemreplacer.client.data;
 
-import com.grim3212.assorted.itemreplacer.Family;
 import com.grim3212.assorted.lib.data.LibManualProvider;
 import com.grim3212.assorted.itemreplacer.Constants;
 import net.minecraft.data.PackOutput;
@@ -14,13 +13,11 @@ public class ItemReplacerManualProvider extends LibManualProvider {
     private static final int PICTURE_HEIGHT = 86;
 
     public ItemReplacerManualProvider(PackOutput output) {
-        super(output, Constants.MOD_ID, Family.ID);
+        super(output, Constants.MOD_ID, Constants.FAMILY_ID);
     }
 
     @Override
     protected void addChapters() {
-        this.section(Family.MANUAL_ORDER, Family.ICONS.toArray(Identifier[]::new));
-
         this.chapter("auto_item_replacer", 20).image("info", picture("auto_item_replacer"), PICTURE_WIDTH, PICTURE_HEIGHT);
     }
 

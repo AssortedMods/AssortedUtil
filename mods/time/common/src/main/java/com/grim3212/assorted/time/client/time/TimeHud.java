@@ -1,5 +1,6 @@
 package com.grim3212.assorted.time.client.time;
 
+import com.grim3212.assorted.lib.conditions.PartToggles;
 import com.grim3212.assorted.time.Constants;
 import com.grim3212.assorted.time.client.TimeClient;
 import net.minecraft.client.DeltaTracker;
@@ -62,6 +63,10 @@ public final class TimeHud {
     }
 
     public static void extract(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
+        if (!PartToggles.isEnabled(Constants.MOD_ID)) {
+            return;
+        }
+
         float progress = Mth.lerp(deltaTracker.getGameTimeDeltaPartialTick(true), lastSlide, slide);
         Minecraft minecraft = Minecraft.getInstance();
         if (progress <= 0.0F || minecraft.level == null) {

@@ -1,6 +1,5 @@
 package com.grim3212.assorted.graves.client.data;
 
-import com.grim3212.assorted.graves.Family;
 import com.grim3212.assorted.lib.data.LibManualProvider;
 import com.grim3212.assorted.graves.Constants;
 import net.minecraft.data.PackOutput;
@@ -14,13 +13,11 @@ public class GravesManualProvider extends LibManualProvider {
     private static final int PICTURE_HEIGHT = 86;
 
     public GravesManualProvider(PackOutput output) {
-        super(output, Constants.MOD_ID, Family.ID);
+        super(output, Constants.MOD_ID, Constants.FAMILY_ID);
     }
 
     @Override
     protected void addChapters() {
-        this.section(Family.MANUAL_ORDER, Family.ICONS.toArray(Identifier[]::new));
-
         ChapterBuilder graves = this.chapter("graves", 0);
         graves.image("info", picture("grave"), PICTURE_WIDTH, PICTURE_HEIGHT).opensBlocks(Identifier.fromNamespaceAndPath(Constants.MOD_ID, "grave"));
         graves.image("restore", picture("grave_restore"), PICTURE_WIDTH, PICTURE_HEIGHT);

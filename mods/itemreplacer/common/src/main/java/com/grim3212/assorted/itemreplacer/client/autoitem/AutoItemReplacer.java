@@ -1,6 +1,8 @@
 package com.grim3212.assorted.itemreplacer.client.autoitem;
 
+import com.grim3212.assorted.itemreplacer.Constants;
 import com.grim3212.assorted.itemreplacer.common.autoitem.Replacements;
+import com.grim3212.assorted.lib.conditions.PartToggles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,7 +24,7 @@ public final class AutoItemReplacer {
 
     public static void tick(Minecraft minecraft) {
         LocalPlayer player = minecraft.player;
-        if (player == null || minecraft.gameMode == null || player.isSpectator()) {
+        if (player == null || minecraft.gameMode == null || player.isSpectator() || !PartToggles.isEnabled(Constants.MOD_ID)) {
             lastStack = ItemStack.EMPTY;
             lastSlot = -1;
             return;

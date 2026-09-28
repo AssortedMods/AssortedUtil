@@ -1,5 +1,6 @@
 package com.grim3212.assorted.lightoverlay.client;
 
+import com.grim3212.assorted.lib.family.Families;
 import com.grim3212.assorted.lib.platform.ClientServices;
 import com.grim3212.assorted.lightoverlay.Constants;
 import com.grim3212.assorted.lightoverlay.client.light.LightOverlay;
@@ -18,6 +19,10 @@ public class LightOverlayClient {
     public static KeyMapping TOGGLE_LIGHT_OVERLAY;
 
     public static void init() {
+        Families.join(Constants.MOD_ID, Constants.FAMILY_ID)
+                .icon(Identifier.withDefaultNamespace("clock"), 10)
+                .manualOrder(160);
+
         // F7 is where light overlays have always lived.
         TOGGLE_LIGHT_OVERLAY = ClientServices.KEYBINDS.createNew("key.assortedlightoverlay.toggle_light_overlay", ClientServices.KEYBINDS.getInGameKeyConflictContext(), InputConstants.Type.KEYSYM, InputConstants.KEY_F7, KEY_CATEGORY);
         ClientServices.CLIENT.registerKeyMapping(TOGGLE_LIGHT_OVERLAY);
