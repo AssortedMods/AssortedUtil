@@ -2,6 +2,7 @@
 
 A group of small mods that make everyday Minecraft a little easier. Each one can be installed on its own.
 
+- [Assorted Util](mods/util) has all of them in one download
 - [Assorted Graves](mods/graves) keeps your items and experience in a grave when you die
 - [Assorted Double Doors](mods/doubledoors) opens both doors of a double door at once
 - [Assorted Item Replacer](mods/itemreplacer) refills your hand when a tool breaks or a stack runs out
