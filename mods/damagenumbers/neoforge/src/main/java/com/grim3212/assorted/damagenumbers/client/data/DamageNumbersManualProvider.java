@@ -21,7 +21,7 @@ public class DamageNumbersManualProvider extends LibManualProvider {
         this.chapter("damage_numbers", 50).image("info", picture("damage_numbers"), PICTURE_WIDTH, PICTURE_HEIGHT);
     }
 
-    /** In-game screenshots under {@code textures/gui/manual}, taken with AssortedUtil-photos beside this repository. */
+    /** In-game screenshots under {@code textures/gui/manual}. */
     private static Identifier picture(String name) {
         return Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/manual/" + name + ".png");
     }

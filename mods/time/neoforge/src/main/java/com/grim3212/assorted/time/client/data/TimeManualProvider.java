@@ -21,7 +21,7 @@ public class TimeManualProvider extends LibManualProvider {
         this.chapter("time", 30).image("info", picture("time"), PICTURE_WIDTH, PICTURE_HEIGHT);
     }
 
-    /** In-game screenshots under {@code textures/gui/manual}, taken with AssortedUtil-photos beside this repository. */
+    /** In-game screenshots under {@code textures/gui/manual}. */
     private static Identifier picture(String name) {
         return Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/manual/" + name + ".png");
     }

@@ -21,7 +21,7 @@ public class ItemReplacerManualProvider extends LibManualProvider {
         this.chapter("auto_item_replacer", 20).image("info", picture("auto_item_replacer"), PICTURE_WIDTH, PICTURE_HEIGHT);
     }
 
-    /** In-game screenshots under {@code textures/gui/manual}, taken with AssortedUtil-photos beside this repository. */
+    /** In-game screenshots under {@code textures/gui/manual}. */
     private static Identifier picture(String name) {
         return Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/manual/" + name + ".png");
     }
