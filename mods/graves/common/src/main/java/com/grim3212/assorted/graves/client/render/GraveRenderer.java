@@ -72,7 +72,7 @@ public class GraveRenderer implements BlockEntityRenderer<GraveBlockEntity, Grav
     public void submit(GraveRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.translate(0.5F, 0.0F, 0.5F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(state.yRot));
+        poseStack.rotate(Axis.YP.rotationDegrees(state.yRot));
 
         float top = 0.8F;
         for (int i = 0; i < state.lines.size(); i++) {

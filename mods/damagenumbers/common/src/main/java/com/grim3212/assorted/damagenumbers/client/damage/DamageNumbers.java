@@ -160,7 +160,7 @@ public final class DamageNumbers {
 
             poseStack.pushPose();
             poseStack.translate(Mth.lerp(partialTick, popup.lastX, popup.x) - cam.x, Mth.lerp(partialTick, popup.lastY, popup.y) - cam.y, Mth.lerp(partialTick, popup.lastZ, popup.z) - cam.z);
-            poseStack.mulPose(camera.orientation);
+            poseStack.rotate(camera.orientation);
             poseStack.scale(TEXT_SCALE, -TEXT_SCALE, TEXT_SCALE);
             // 1.2.5 drew the number four times around itself in the background colour; an outline is the same look.
             collector.submitText(poseStack, popup.offset, 0.0F, popup.text, false, Font.DisplayMode.NORMAL, LightCoordsUtil.FULL_BRIGHT,

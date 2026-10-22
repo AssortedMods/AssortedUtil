@@ -32,7 +32,7 @@ public class AssortedGravesNeoForge {
     private void gatherServerData(final GatherDataEvent.Server event) {
         PackOutput packOutput = event.getGenerator().getPackOutput();
 
-        event.addProvider(new ForgeBlockTagProvider(packOutput, event.getLookupProvider(), Constants.MOD_ID, new GravesBlockTagProvider(packOutput, event.getLookupProvider())));
+        event.addProvider(new ForgeBlockTagProvider(packOutput, event.getWorldLookupProvider(), Constants.MOD_ID, new GravesBlockTagProvider(packOutput, event.getWorldLookupProvider())));
     }
 
     /** Client datagen: models, the language file and the manual, written into common for both loaders. */

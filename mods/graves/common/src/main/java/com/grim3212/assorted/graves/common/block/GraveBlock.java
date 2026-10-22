@@ -36,7 +36,6 @@ import java.util.Map;
 /** A headstone over a slab of cover. {@code FACING} is the way the inscription faces. */
 public class GraveBlock extends HorizontalDirectionalBlock implements EntityBlock, SimpleWaterloggedBlock {
 
-    public static final MapCodec<GraveBlock> CODEC = simpleCodec(GraveBlock::new);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     private static final Map<Direction, VoxelShape> SHAPES = Shapes.rotateHorizontal(
@@ -45,11 +44,6 @@ public class GraveBlock extends HorizontalDirectionalBlock implements EntityBloc
     public GraveBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
-    }
-
-    @Override
-    protected MapCodec<? extends GraveBlock> codec() {
-        return CODEC;
     }
 
     @Override

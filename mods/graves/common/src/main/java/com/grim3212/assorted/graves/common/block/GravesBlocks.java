@@ -20,7 +20,7 @@ public class GravesBlocks {
 
     // Only ever placed by a death, so no item. Nothing but a player's hand should end it: not a creeper, a piston or the wither.
     public static final IRegistryObject<GraveBlock> GRAVE = register("grave", props -> new GraveBlock(props.mapColor(MapColor.STONE).strength(1.5F, 3600000.0F)
-            .sound(SoundType.STONE).noOcclusion().noLootTable().pushReaction(PushReaction.BLOCK)));
+            .sound(SoundType.STONE).noOcclusion().noLootTable().pushReaction(PushReaction.IMMOVEABLE)));
 
     private static <T extends Block> IRegistryObject<T> register(String name, Function<BlockBehaviour.Properties, ? extends T> factory) {
         final ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Constants.MOD_ID, name));

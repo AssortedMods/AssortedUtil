@@ -24,7 +24,7 @@ public class LightOverlayClient {
                 .manualOrder(160);
 
         // F7 is where light overlays have always lived.
-        TOGGLE_LIGHT_OVERLAY = ClientServices.KEYBINDS.createNew("key.assortedlightoverlay.toggle_light_overlay", ClientServices.KEYBINDS.getInGameKeyConflictContext(), InputConstants.Type.KEYSYM, InputConstants.KEY_F7, KEY_CATEGORY);
+        TOGGLE_LIGHT_OVERLAY = ClientServices.KEYBINDS.createNew("key.assortedlightoverlay.toggle_light_overlay", ClientServices.KEYBINDS.getInGameKeyConflictContext(), InputConstants.Type.KEYBOARD, InputConstants.KEY_F7, KEY_CATEGORY);
         ClientServices.CLIENT.registerKeyMapping(TOGGLE_LIGHT_OVERLAY);
 
         ClientServices.CLIENT.registerClientTickEnd(LightOverlayClient::tick);

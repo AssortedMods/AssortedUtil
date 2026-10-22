@@ -7,6 +7,7 @@ import com.grim3212.assorted.graves.GravesCommonMod;
 import com.grim3212.assorted.graves.common.block.GraveBlock;
 import com.grim3212.assorted.graves.common.block.GravesBlocks;
 import com.grim3212.assorted.graves.common.block.entity.GraveBlockEntity;
+import com.grim3212.assorted.lib.util.BlockPosUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -14,6 +15,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.ItemStackWithSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -93,7 +95,7 @@ public final class Graves {
     public static @Nullable BlockPos findSpot(ServerLevel level, BlockPos origin, int radius) {
         // Died in the void or above the build limit: the nearest height a block can go.
         BlockPos start = new BlockPos(origin.getX(), Mth.clamp(origin.getY(), level.getMinY(), level.getMaxY()), origin.getZ());
-        for (BlockPos pos : BlockPos.withinManhattan(start, radius, radius, radius)) {
+        for (BlockPos pos : BlockPosUtil.withinManhattan(start, radius, radius, radius)) {
             if (canHold(level, pos)) {
                 return pos.immutable();
             }
@@ -131,7 +133,7 @@ public final class Graves {
         }
         for (ItemStack stack : leftovers) {
             if (!inventory.add(stack) && !stack.isEmpty()) {
-                player.drop(stack, false);
+                player.drop(stack, false, Prediction.SERVER_ONLY);
             }
         }
 

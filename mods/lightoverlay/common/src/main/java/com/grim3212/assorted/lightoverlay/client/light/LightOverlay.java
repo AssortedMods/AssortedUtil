@@ -169,8 +169,8 @@ public final class LightOverlay {
             poseStack.pushPose();
             poseStack.translate(marker.x() - cam.x, marker.y() - cam.y, marker.z() - cam.z);
             // Lying flat, turned so its top points the way the player looks.
-            poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - facing));
-            poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
+            poseStack.rotate(Axis.YP.rotationDegrees(180.0F - facing));
+            poseStack.rotate(Axis.XP.rotationDegrees(-90.0F));
             poseStack.scale(TEXT_SCALE, -TEXT_SCALE, TEXT_SCALE);
             collector.submitText(poseStack, marker.offset(), -4.0F, marker.text(), false, Font.DisplayMode.POLYGON_OFFSET,
                     LightCoordsUtil.FULL_BRIGHT, marker.color(), PLATE, 0);

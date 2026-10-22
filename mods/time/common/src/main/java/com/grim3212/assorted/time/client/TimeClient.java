@@ -25,7 +25,7 @@ public class TimeClient {
                 .manualOrder(160);
 
         // G, the 1.12 time key, is vanilla's quick actions now.
-        TOGGLE_TIME = ClientServices.KEYBINDS.createNew("key.assortedtime.toggle_time", ClientServices.KEYBINDS.getInGameKeyConflictContext(), InputConstants.Type.KEYSYM, InputConstants.KEY_H, KEY_CATEGORY);
+        TOGGLE_TIME = ClientServices.KEYBINDS.createNew("key.assortedtime.toggle_time", ClientServices.KEYBINDS.getInGameKeyConflictContext(), InputConstants.Type.KEYBOARD, InputConstants.KEY_H, KEY_CATEGORY);
         ClientServices.CLIENT.registerKeyMapping(TOGGLE_TIME);
 
         ClientServices.CLIENT.registerClientTickEnd(TimeClient::tick);
