@@ -1,5 +1,7 @@
 package com.grim3212.assorted.damagenumbers.gametest;
 
+import com.grim3212.assorted.damagenumbers.Constants;
+import com.grim3212.assorted.lib.test.ClientChecks;
 import com.grim3212.assorted.damagenumbers.client.damage.DamageKind;
 import com.grim3212.assorted.damagenumbers.client.damage.DamageNumbers;
 import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
@@ -22,6 +24,7 @@ public class DamageNumbersClientGameTests implements FabricClientGameTest {
     @Override
     public void runTest(ClientGameTestContext context) {
         try (TestSingleplayerContext world = context.worldBuilder().create()) {
+            ClientChecks.assertDrawsRight(context, Constants.MOD_ID);
             world.getConnection().waitForChunksRender();
 
             int husk = world.getServer().computeOnServer(server -> {

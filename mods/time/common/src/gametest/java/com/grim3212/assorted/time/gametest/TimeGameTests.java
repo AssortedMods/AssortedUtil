@@ -1,5 +1,7 @@
 package com.grim3212.assorted.time.gametest;
 
+import com.grim3212.assorted.time.Constants;
+import com.grim3212.assorted.lib.test.CommonTests;
 import net.minecraft.gametest.framework.GameTestHelper;
 
 import java.util.function.BiConsumer;
@@ -17,5 +19,6 @@ public final class TimeGameTests {
     /** Every test in this mod, named once, so both loaders register the same set. */
     public static void forEach(BiConsumer<String, Consumer<GameTestHelper>> out) {
         SmokeTests.register(out);
+        CommonTests.register(out, Constants.MOD_ID);
     }
 }

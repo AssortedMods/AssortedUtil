@@ -1,5 +1,7 @@
 package com.grim3212.assorted.graves.gametest;
 
+import com.grim3212.assorted.graves.Constants;
+import com.grim3212.assorted.lib.test.CommonTests;
 import net.minecraft.gametest.framework.GameTestHelper;
 
 import java.util.function.BiConsumer;
@@ -19,5 +21,6 @@ public final class GravesGameTests {
         SmokeTests.register(out);
         GraveTests.register(out);
         FamilyTests.register(out);
+        CommonTests.register(out, Constants.MOD_ID);
     }
 }

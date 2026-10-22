@@ -1,5 +1,8 @@
 package com.grim3212.assorted.lightoverlay.gametest;
 
+import com.grim3212.assorted.lightoverlay.Constants;
+import com.grim3212.assorted.lib.test.ClientChecks;
+import com.grim3212.assorted.lightoverlay.client.LightOverlayClient;
 import com.grim3212.assorted.lightoverlay.client.light.LightOverlay;
 import com.grim3212.assorted.lightoverlay.common.light.SpawnLight;
 import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
@@ -18,6 +21,7 @@ public class LightOverlayClientGameTests implements FabricClientGameTest {
     @Override
     public void runTest(ClientGameTestContext context) {
         try (TestSingleplayerContext world = context.worldBuilder().create()) {
+            ClientChecks.assertDrawsRight(context, Constants.MOD_ID);
             world.getConnection().waitForChunksRender();
             world.getServer().runOnServer(server -> {
                 ServerLevel level = server.overworld();
@@ -28,8 +32,13 @@ public class LightOverlayClientGameTests implements FabricClientGameTest {
                 level.setBlockAndUpdate(player.blockPosition().north(3).west(3), Blocks.TORCH.defaultBlockState());
             });
 
+            // F7 itself, as 26.3's keyboard went to scancodes and a key that reads nothing would show no overlay.
+            context.getInput().pressKey(options -> LightOverlayClient.TOGGLE_LIGHT_OVERLAY);
+            context.waitTick();
+            if (!context.computeOnClient(client -> LightOverlay.isShown())) {
+                throw new AssertionError("pressing the light overlay key did not show it");
+            }
             context.runOnClient(client -> {
-                LightOverlay.toggle(client);
                 if (LightOverlay.scan(client.level, client.player.blockPosition(), 8, true).isEmpty()) {
                     throw new AssertionError("the light overlay found nowhere to mark on a grass plain");
                 }

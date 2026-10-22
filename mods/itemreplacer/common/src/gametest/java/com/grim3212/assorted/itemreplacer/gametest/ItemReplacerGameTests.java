@@ -1,5 +1,7 @@
 package com.grim3212.assorted.itemreplacer.gametest;
 
+import com.grim3212.assorted.itemreplacer.Constants;
+import com.grim3212.assorted.lib.test.CommonTests;
 import net.minecraft.gametest.framework.GameTestHelper;
 
 import java.util.function.BiConsumer;
@@ -18,5 +20,6 @@ public final class ItemReplacerGameTests {
     public static void forEach(BiConsumer<String, Consumer<GameTestHelper>> out) {
         SmokeTests.register(out);
         ReplacementTests.register(out);
+        CommonTests.register(out, Constants.MOD_ID);
     }
 }
