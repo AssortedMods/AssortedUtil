@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assortedlightoverlay:light_overlay_scan_places_its_numbers",
+  "structure": "assortedlightoverlay:test_box",
+  "max_ticks": 400,
+  "setup_ticks": 0,
+  "required": true
+}

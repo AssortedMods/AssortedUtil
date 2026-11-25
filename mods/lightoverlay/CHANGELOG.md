@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+
+- No change in game. The overlay's scan moved where the tests can check where its numbers go
+
 ## 2.0.0
 
 Updated to Minecraft 26.3, for NeoForge and Fabric.

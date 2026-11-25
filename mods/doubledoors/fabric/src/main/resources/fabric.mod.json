@@ -18,6 +18,9 @@
       "com.grim3212.assorted.doubledoors.AssortedDoubleDoorsFabric"
     ]
   },
+  "mixins": [
+    "${mod_id}.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.19",
     "fabric-api": "*",

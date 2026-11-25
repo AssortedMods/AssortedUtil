@@ -2,6 +2,7 @@ package com.grim3212.assorted.doubledoors.common.door;
 
 import com.grim3212.assorted.doubledoors.DoubleDoorsCommonMod;
 import com.grim3212.assorted.doubledoors.api.DoubleDoorsTags;
+import com.grim3212.assorted.doubledoors.mixin.TrapDoorBlockAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -32,7 +33,7 @@ public final class DoorPartners {
 
     /** Where the partners of the block at {@code pos} are; empty when it has none or is not a door at all. */
     public static List<BlockPos> find(Level level, BlockPos pos, BlockState state) {
-        if (state.is(DoubleDoorsTags.Blocks.IGNORED_BY_DOUBLE_DOORS)) {
+        if (state.is(DoubleDoorsTags.Blocks.IGNORED_BY_DOUBLE_DOORS) || !opensByHand(state)) {
             return List.of();
         }
 
@@ -47,6 +48,20 @@ public final class DoorPartners {
         }
 
         return List.of();
+    }
+
+    /**
+     * Whether a click opens this block by itself. An iron door or trapdoor wants redstone, so a click on
+     * it must not open its wooden partners either. Every fence gate opens by hand.
+     */
+    public static boolean opensByHand(BlockState state) {
+        if (state.getBlock() instanceof DoorBlock door) {
+            return door.type().canOpenByHand();
+        }
+        if (state.getBlock() instanceof TrapDoorBlock trapdoor) {
+            return ((TrapDoorBlockAccessor) trapdoor).assorteddoubledoors_getType().canOpenByHand();
+        }
+        return true;
     }
 
     public static boolean isDoor(BlockState state) {
