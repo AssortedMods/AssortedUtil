@@ -1,5 +1,7 @@
 package com.grim3212.assorted.damagenumbers.client.damage;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -48,6 +50,11 @@ public class DamagePopup {
         return this.color;
     }
 
+    /** Height in the world, at the end of the last tick. */
+    public double y() {
+        return this.y;
+    }
+
     /** False once it has faded out. */
     public boolean tick() {
         this.lastX = this.x;
@@ -74,6 +81,15 @@ public class DamagePopup {
     public int alpha(float partialTick) {
         float left = 1.0F - (this.age + partialTick) / this.lifetime;
         return (int) (Mth.clamp(left * 2.0F, 0.0F, 1.0F) * 255.0F);
+    }
+
+    /** What a change in health reads, as in {@code -3 (Fire)} or {@code +2 (Heal)}; the label only when the player wants it. */
+    public static MutableComponent text(float change, Component label, boolean showSource) {
+        MutableComponent text = Component.literal((change < 0.0F ? "-" : "+") + amount(Math.abs(change)));
+        if (showSource) {
+            text.append(" (").append(label).append(")");
+        }
+        return text;
     }
 
     /** Whole numbers stay whole; half hearts and the like get one decimal. */

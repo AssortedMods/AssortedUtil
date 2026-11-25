@@ -2,6 +2,13 @@ package com.grim3212.assorted.itemreplacer.common.autoitem;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.HoneyBottleItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MilkBucketItem;
+import net.minecraft.world.item.PotionItem;
+import net.minecraft.world.item.ThrowablePotionItem;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -37,7 +44,7 @@ public final class Replacements {
             }
 
             // Leave the rest of the hotbar as the player laid it out.
-            if (slot >= Inventory.SELECTION_SIZE) {
+            if (slot >= Inventory.getSelectionSize()) {
                 score += 1 << 24;
             }
 
@@ -60,7 +67,28 @@ public final class Replacements {
 
     /** Whether {@code now} is what using up the last of {@code used} leaves behind: the bowl, bottle or bucket. */
     public static boolean isLeftoverOf(ItemStack used, ItemStack now) {
-        var remainder = used.get(DataComponents.USE_REMAINDER);
-        return used.getCount() == 1 && remainder != null && !now.isEmpty() && ItemStack.isSameItem(remainder.convertInto().create(), now);
+        ItemStack remainder = leftover(used);
+        return used.getCount() == 1 && !remainder.isEmpty() && !now.isEmpty() && ItemStack.isSameItem(remainder, now);
+    }
+
+    /**
+     * What eating or drinking {@code used} leaves in the hand. 1.21.1 has no use-remainder component:
+     * food names its leftover, and the drinks hand back their bottle or bucket in code.
+     */
+    private static ItemStack leftover(ItemStack used) {
+        FoodProperties food = used.get(DataComponents.FOOD);
+        if (food != null && food.usingConvertsTo().isPresent()) {
+            return food.usingConvertsTo().get();
+        }
+
+        Item item = used.getItem();
+        if ((item instanceof PotionItem && !(item instanceof ThrowablePotionItem)) || item instanceof HoneyBottleItem) {
+            return new ItemStack(Items.GLASS_BOTTLE);
+        }
+        if (item instanceof MilkBucketItem) {
+            return new ItemStack(Items.BUCKET);
+        }
+
+        return ItemStack.EMPTY;
     }
 }

@@ -8,13 +8,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -31,6 +29,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import java.util.EnumMap;
 import java.util.Map;
 
 /** A headstone over a slab of cover. {@code FACING} is the way the inscription faces. */
@@ -38,12 +37,35 @@ public class GraveBlock extends HorizontalDirectionalBlock implements EntityBloc
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    private static final Map<Direction, VoxelShape> SHAPES = Shapes.rotateHorizontal(
+    public static final MapCodec<GraveBlock> CODEC = simpleCodec(GraveBlock::new);
+
+    private static final Map<Direction, VoxelShape> SHAPES = rotations(
             Shapes.or(Block.box(1, 0, 14, 15, 15, 16), Block.box(2, 0, 1, 14, 1, 14)));
 
     public GraveBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
+    }
+
+    /** The shape for each facing, from the one facing north, turned clockwise a quarter at a time. */
+    private static Map<Direction, VoxelShape> rotations(VoxelShape north) {
+        Map<Direction, VoxelShape> shapes = new EnumMap<>(Direction.class);
+        VoxelShape shape = north;
+        Direction facing = Direction.NORTH;
+        for (int turn = 0; turn < 4; turn++) {
+            shapes.put(facing, shape);
+            VoxelShape[] turned = {Shapes.empty()};
+            shape.forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) ->
+                    turned[0] = Shapes.or(turned[0], Shapes.box(1.0D - maxZ, minY, minX, 1.0D - minZ, maxY, maxX)));
+            shape = turned[0].optimize();
+            facing = facing.getClockWise();
+        }
+        return shapes;
     }
 
     @Override
@@ -62,12 +84,21 @@ public class GraveBlock extends HorizontalDirectionalBlock implements EntityBloc
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbour, BlockPos neighbourPos, BlockState neighbourState, RandomSource random) {
+    protected BlockState updateShape(BlockState state, Direction directionToNeighbour, BlockState neighbourState, LevelAccessor level, BlockPos pos, BlockPos neighbourPos) {
         if (state.getValue(WATERLOGGED)) {
-            ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
 
-        return super.updateShape(state, level, ticks, pos, directionToNeighbour, neighbourPos, neighbourState, random);
+        return super.updateShape(state, directionToNeighbour, neighbourState, level, pos, neighbourPos);
+    }
+
+    /** Spills what the grave still holds while its block entity exists; a state change such as waterlogging keeps it. */
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof GraveBlockEntity grave) {
+            grave.onBlockRemoved(level, pos);
+        }
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     @Override
@@ -83,7 +114,7 @@ public class GraveBlock extends HorizontalDirectionalBlock implements EntityBloc
 
         if (!mayOpen(grave, player)) {
             if (player instanceof ServerPlayer) {
-                player.sendOverlayMessage(Component.translatable("message.assortedgraves.grave.not_yours", grave.getOwnerName()));
+                player.displayClientMessage(Component.translatable("message.assortedgraves.grave.not_yours", grave.getOwnerName()), true);
             }
             return InteractionResult.FAIL;
         }
@@ -92,7 +123,7 @@ public class GraveBlock extends HorizontalDirectionalBlock implements EntityBloc
             Graves.restore(serverPlayer, grave);
         }
 
-        return InteractionResult.SUCCESS;
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Override

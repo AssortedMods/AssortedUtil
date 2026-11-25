@@ -2,7 +2,7 @@ package com.grim3212.assorted.damagenumbers.client.damage;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.TagKey;
@@ -10,6 +10,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -33,7 +35,7 @@ public enum DamageKind {
     HEALING(0x00A550);
 
     // NeoForge's tag, which magic mods fill; Fabric has no damage type conventions, so there it only has what mods add.
-    private static final TagKey<DamageType> MODDED_MAGIC = TagKey.create(Registries.DAMAGE_TYPE, Identifier.fromNamespaceAndPath("neoforge", "is_magic"));
+    private static final TagKey<DamageType> MODDED_MAGIC = TagKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath("neoforge", "is_magic"));
 
     private final int color;
 
@@ -47,12 +49,12 @@ public enum DamageKind {
 
     /** A modded type that ends up generic gets a colour of its own, picked from its id so it is the same every launch. */
     public int color(@Nullable DamageSource source) {
-        Identifier id = this == GENERIC ? moddedId(source) : null;
+        ResourceLocation id = this == GENERIC ? moddedId(source) : null;
         return id == null ? this.color : colorOf(id);
     }
 
     /** Hue from anywhere on the wheel, but kept light and not too strong, so it reads against the black outline. */
-    public static int colorOf(Identifier id) {
+    public static int colorOf(ResourceLocation id) {
         // String.hashCode is fixed by the Java spec, so the colour never changes between launches or machines.
         int hash = Mth.murmurHash3Mixer(id.toString().hashCode());
         float hue = (hash & 0xFFFF) / 65536.0F;
@@ -61,9 +63,9 @@ public enum DamageKind {
         return Mth.hsvToRgb(hue, saturation, value);
     }
 
-    private static @Nullable Identifier moddedId(@Nullable DamageSource source) {
-        Identifier id = source == null ? null : source.typeHolder().unwrapKey().map(ResourceKey::identifier).orElse(null);
-        return id == null || id.getNamespace().equals(Identifier.DEFAULT_NAMESPACE) ? null : id;
+    private static @Nullable ResourceLocation moddedId(@Nullable DamageSource source) {
+        ResourceLocation id = source == null ? null : source.typeHolder().unwrapKey().map(ResourceKey::location).orElse(null);
+        return id == null || id.getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE) ? null : id;
     }
 
     public Component label() {
@@ -72,15 +74,30 @@ public enum DamageKind {
 
     /** Damage types have no names, only death messages, so a modded generic one takes ours if a lang file gives it, else its id. */
     public Component label(@Nullable DamageSource source) {
-        Identifier id = this == GENERIC ? moddedId(source) : null;
+        ResourceLocation id = this == GENERIC ? moddedId(source) : null;
         return id == null ? this.label() : Component.translatableWithFallback("hud.assorteddamagenumbers.damage." + id.toLanguageKey(), nameOf(id));
     }
 
     /** {@code mymod:acid_splash} reads "Acid Splash". */
-    public static String nameOf(Identifier id) {
+    public static String nameOf(ResourceLocation id) {
         String path = id.getPath().substring(id.getPath().lastIndexOf('/') + 1);
         return Arrays.stream(path.split("_")).filter(word -> !word.isEmpty())
                 .map(word -> word.substring(0, 1).toUpperCase(Locale.ROOT) + word.substring(1)).collect(Collectors.joining(" "));
+    }
+
+    /** A player's hit names the weapon, as 1.2.5 did; a creature's names the creature, and a projectile itself. */
+    public static Component describe(DamageKind kind, @Nullable DamageSource source) {
+        if (source != null && kind == MELEE && source.getEntity() != null) {
+            if (source.getEntity() instanceof Player attacker) {
+                ItemStack weapon = attacker.getMainHandItem();
+                return weapon.isEmpty() ? kind.label() : weapon.getHoverName();
+            }
+            return source.getEntity().getName();
+        }
+        if (source != null && kind == PROJECTILE && source.getDirectEntity() != null) {
+            return source.getDirectEntity().getName();
+        }
+        return kind.label(source);
     }
 
     public static DamageKind of(@Nullable DamageSource source) {

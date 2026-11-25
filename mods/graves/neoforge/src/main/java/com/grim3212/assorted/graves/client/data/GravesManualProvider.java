@@ -3,7 +3,7 @@ package com.grim3212.assorted.graves.client.data;
 import com.grim3212.assorted.lib.data.LibManualProvider;
 import com.grim3212.assorted.graves.Constants;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 /** This mod's chapter of the Assorted Util section, which every Util mod shares. */
 public class GravesManualProvider extends LibManualProvider {
@@ -19,12 +19,12 @@ public class GravesManualProvider extends LibManualProvider {
     @Override
     protected void addChapters() {
         ChapterBuilder graves = this.chapter("graves", 0);
-        graves.image("info", picture("grave"), PICTURE_WIDTH, PICTURE_HEIGHT).opensBlocks(Identifier.fromNamespaceAndPath(Constants.MOD_ID, "grave"));
+        graves.image("info", picture("grave"), PICTURE_WIDTH, PICTURE_HEIGHT).opensBlocks(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "grave"));
         graves.image("restore", picture("grave_restore"), PICTURE_WIDTH, PICTURE_HEIGHT);
     }
 
     /** In-game screenshots under {@code textures/gui/manual}. */
-    private static Identifier picture(String name) {
-        return Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/manual/" + name + ".png");
+    private static ResourceLocation picture(String name) {
+        return ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/manual/" + name + ".png");
     }
 }

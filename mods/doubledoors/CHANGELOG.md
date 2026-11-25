@@ -1,15 +1,8 @@
 # Changelog
 
-## 2.0.0
+## 21.1.0.0
 
-Updated to Minecraft 26.3, for NeoForge and Fabric.
+First release for Minecraft 1.21.1, for NeoForge and Fabric. Releases for 1.21.1 are numbered 21.1.x.y, where 21.1 is the Minecraft version.
 
-- Requires Assorted Lib 5.0.0
-
-## 1.0.0
-
-- First release
-- Opening one door of a double door opens the other one too
-- Works for trapdoors and fence gates
-- Sneak to open just one
-- Requires Assorted Lib 4.3.0
+- Matches Assorted Double Doors 2.0.1 for Minecraft 26.3
+- Requires Assorted Lib 21.1.0.0

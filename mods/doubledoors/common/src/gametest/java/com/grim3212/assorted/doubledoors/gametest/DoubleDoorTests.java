@@ -34,6 +34,7 @@ final class DoubleDoorTests {
         out.accept("double_door_opens_and_closes_together", DoubleDoorTests::doubleDoorOpensAndClosesTogether);
         out.accept("sneaking_opens_one_door", DoubleDoorTests::sneakingOpensOneDoor);
         out.accept("iron_partner_stays_shut", DoubleDoorTests::ironPartnerStaysShut);
+        out.accept("clicked_iron_opens_nothing", DoubleDoorTests::clickedIronOpensNothing);
         out.accept("trapdoor_hatch_opens_together", DoubleDoorTests::trapdoorHatchOpensTogether);
         out.accept("fence_gates_open_together", DoubleDoorTests::fenceGatesOpenTogether);
     }
@@ -88,6 +89,27 @@ final class DoubleDoorTests {
 
         helper.assertBlockProperty(new BlockPos(3, 1, 4), DoorBlock.OPEN, true);
         helper.assertBlockProperty(new BlockPos(4, 1, 4), DoorBlock.OPEN, false);
+        helper.succeed();
+    }
+
+    /** A click on the iron half of a pair, or on an iron trapdoor in a hatch, does nothing, so its wooden partners stay shut too. */
+    private static void clickedIronOpensNothing(GameTestHelper helper) {
+        ServerPlayer player = mortalPlayer(helper, new BlockPos(4, 1, 6));
+        doorPair(helper, Blocks.OAK_DOOR.defaultBlockState(), Blocks.IRON_DOOR.defaultBlockState());
+        BlockState south = Blocks.OAK_TRAPDOOR.defaultBlockState().setValue(TrapDoorBlock.FACING, Direction.SOUTH);
+        BlockState ironSouth = Blocks.IRON_TRAPDOOR.defaultBlockState().setValue(TrapDoorBlock.FACING, Direction.SOUTH);
+        BlockPos ironTrapdoor = new BlockPos(6, 1, 5);
+        BlockPos oakTrapdoor = new BlockPos(7, 1, 5);
+        helper.setBlock(ironTrapdoor, ironSouth);
+        helper.setBlock(oakTrapdoor, south);
+
+        use(helper, player, new BlockPos(4, 1, 4));
+        use(helper, player, ironTrapdoor);
+
+        helper.assertBlockProperty(new BlockPos(3, 1, 4), DoorBlock.OPEN, false);
+        helper.assertBlockProperty(new BlockPos(4, 1, 4), DoorBlock.OPEN, false);
+        helper.assertBlockProperty(ironTrapdoor, TrapDoorBlock.OPEN, false);
+        helper.assertBlockProperty(oakTrapdoor, TrapDoorBlock.OPEN, false);
         helper.succeed();
     }
 

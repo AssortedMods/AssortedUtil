@@ -16,14 +16,14 @@ public class AssortedItemReplacerNeoForge {
      * into the {@code @Mod} constructor instead.
      */
     public AssortedItemReplacerNeoForge(IEventBus modBus, ModContainer modContainer) {
-        modBus.addListener(this::gatherClientData);
+        modBus.addListener(this::gatherData);
     }
 
-    /** Client datagen: models, the language file and the manual, written into common for both loaders. */
-    private void gatherClientData(final GatherDataEvent.Client event) {
+    /** Client datagen only: the language file and the manual, written into common for both loaders. */
+    private void gatherData(final GatherDataEvent event) {
         PackOutput packOutput = event.getGenerator().getPackOutput();
 
-        event.addProvider(new ItemReplacerLanguageProvider(packOutput));
-        event.addProvider(new ItemReplacerManualProvider(packOutput));
+        event.getGenerator().addProvider(event.includeClient(), new ItemReplacerLanguageProvider(packOutput));
+        event.getGenerator().addProvider(event.includeClient(), new ItemReplacerManualProvider(packOutput));
     }
 }

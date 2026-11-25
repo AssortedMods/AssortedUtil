@@ -2,6 +2,7 @@ package com.grim3212.assorted.damagenumbers;
 
 import com.grim3212.assorted.damagenumbers.client.data.DamageNumbersLanguageProvider;
 import com.grim3212.assorted.damagenumbers.client.data.DamageNumbersManualProvider;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -20,10 +21,11 @@ public class AssortedDamageNumbersNeoForge {
     }
 
     /** Client datagen: models, the language file and the manual, written into common for both loaders. */
-    private void gatherClientData(final GatherDataEvent.Client event) {
-        PackOutput packOutput = event.getGenerator().getPackOutput();
+    private void gatherClientData(final GatherDataEvent event) {
+        DataGenerator generator = event.getGenerator();
+        PackOutput packOutput = generator.getPackOutput();
 
-        event.addProvider(new DamageNumbersLanguageProvider(packOutput));
-        event.addProvider(new DamageNumbersManualProvider(packOutput));
+        generator.addProvider(event.includeClient(), new DamageNumbersLanguageProvider(packOutput));
+        generator.addProvider(event.includeClient(), new DamageNumbersManualProvider(packOutput));
     }
 }

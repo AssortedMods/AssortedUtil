@@ -33,6 +33,6 @@ public class TimeLanguageProvider extends LibLanguageProvider {
         this.add("manual.assortedutil.chapter.time.info.title", "Time");
         this.add("manual.assortedutil.chapter.time.info",
                 "Press the key default \"H\" to slide down a clock with the day and time in the world. Press it again for the date and time where you are, press it again for both, and once more to hide it." + BREAK
-                        + "In the Nether the world's time cannot be told.");
+                        + "In the Nether and the End the world's time cannot be told.");
     }
 }

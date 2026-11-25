@@ -6,7 +6,7 @@ import com.grim3212.assorted.lib.conditions.PartToggles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 
@@ -31,13 +31,13 @@ public final class AutoItemReplacer {
         }
 
         Inventory inventory = player.getInventory();
-        int slot = inventory.getSelectedSlot();
+        int slot = inventory.selected;
         ItemStack current = inventory.getItem(slot);
 
         if (slot == lastSlot && !lastStack.isEmpty() && (current.isEmpty() || Replacements.isLeftoverOf(lastStack, current)) && !emptiedOnPurpose(minecraft, player)) {
             int from = Replacements.find(inventory, lastStack, slot);
             if (from >= 0) {
-                minecraft.gameMode.handleContainerInput(player.inventoryMenu.containerId, menuSlot(from), slot, ContainerInput.SWAP, player);
+                minecraft.gameMode.handleInventoryMouseClick(player.inventoryMenu.containerId, menuSlot(from), slot, ClickType.SWAP, player);
                 current = inventory.getItem(slot);
             }
         }
@@ -50,12 +50,12 @@ public final class AutoItemReplacer {
 
     /** Dropped with Q, moved to the offhand, or moved around in a screen: the player wanted the slot empty. */
     private static boolean emptiedOnPurpose(Minecraft minecraft, LocalPlayer player) {
-        return minecraft.gui.screen() != null || player.containerMenu != player.inventoryMenu
+        return minecraft.screen != null || player.containerMenu != player.inventoryMenu
                 || minecraft.options.keyDrop.isDown() || minecraft.options.keySwapOffhand.isDown();
     }
 
     /** Inventory slots 0 to 8 are the hotbar, which the inventory menu lists last. */
     private static int menuSlot(int inventorySlot) {
-        return inventorySlot < Inventory.SELECTION_SIZE ? InventoryMenu.USE_ROW_SLOT_START + inventorySlot : inventorySlot;
+        return inventorySlot < Inventory.getSelectionSize() ? InventoryMenu.USE_ROW_SLOT_START + inventorySlot : inventorySlot;
     }
 }

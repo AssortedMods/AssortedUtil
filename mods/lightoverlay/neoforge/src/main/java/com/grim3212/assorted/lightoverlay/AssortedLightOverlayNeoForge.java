@@ -2,6 +2,7 @@ package com.grim3212.assorted.lightoverlay;
 
 import com.grim3212.assorted.lightoverlay.client.data.LightOverlayLanguageProvider;
 import com.grim3212.assorted.lightoverlay.client.data.LightOverlayManualProvider;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -20,10 +21,11 @@ public class AssortedLightOverlayNeoForge {
     }
 
     /** Client datagen: models, the language file and the manual, written into common for both loaders. */
-    private void gatherClientData(final GatherDataEvent.Client event) {
-        PackOutput packOutput = event.getGenerator().getPackOutput();
+    private void gatherClientData(final GatherDataEvent event) {
+        DataGenerator generator = event.getGenerator();
+        PackOutput packOutput = generator.getPackOutput();
 
-        event.addProvider(new LightOverlayLanguageProvider(packOutput));
-        event.addProvider(new LightOverlayManualProvider(packOutput));
+        generator.addProvider(event.includeClient(), new LightOverlayLanguageProvider(packOutput));
+        generator.addProvider(event.includeClient(), new LightOverlayManualProvider(packOutput));
     }
 }

@@ -9,27 +9,27 @@ import com.grim3212.assorted.time.config.TimeClientConfig;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 /** Client-only startup, called by both loaders' client entry points. */
 public class TimeClient {
 
     public static final TimeClientConfig CONFIG = new TimeClientConfig();
-    public static final Identifier KEY_CATEGORY = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "general");
+    public static final ResourceLocation KEY_CATEGORY = ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "general");
 
     public static KeyMapping TOGGLE_TIME;
 
     public static void init() {
         Families.join(Constants.MOD_ID, Constants.FAMILY_ID)
-                .icon(Identifier.withDefaultNamespace("clock"), 10)
+                .icon(ResourceLocation.withDefaultNamespace("clock"), 10)
                 .manualOrder(160);
 
-        // G, the 1.12 time key, is vanilla's quick actions now.
-        TOGGLE_TIME = ClientServices.KEYBINDS.createNew("key.assortedtime.toggle_time", ClientServices.KEYBINDS.getInGameKeyConflictContext(), InputConstants.Type.KEYBOARD, InputConstants.KEY_H, KEY_CATEGORY);
+        // H, as on 26.x, where G, the 1.12 time key, became vanilla's quick actions; the same key on every version.
+        TOGGLE_TIME = ClientServices.KEYBINDS.createNew("key.assortedtime.toggle_time", ClientServices.KEYBINDS.getInGameKeyConflictContext(), InputConstants.Type.KEYSYM, InputConstants.KEY_H, KEY_CATEGORY);
         ClientServices.CLIENT.registerKeyMapping(TOGGLE_TIME);
 
         ClientServices.CLIENT.registerClientTickEnd(TimeClient::tick);
-        ClientServices.CLIENT.registerHudElement(TimeHud.ID, TimeHud::extract);
+        ClientServices.CLIENT.registerHudElement(TimeHud.ID, TimeHud::render);
     }
 
     private static void tick(Minecraft minecraft) {

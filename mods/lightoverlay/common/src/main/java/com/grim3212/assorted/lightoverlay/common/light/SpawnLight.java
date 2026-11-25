@@ -2,7 +2,6 @@ package com.grim3212.assorted.lightoverlay.common.light;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -18,7 +17,7 @@ public enum SpawnLight {
     WHEN_DARK,
     ALWAYS;
 
-    private static final EntityType<?> MONSTER = EntityTypes.ZOMBIE;
+    private static final EntityType<?> MONSTER = EntityType.ZOMBIE;
 
     /** Where NaturalSpawner would put one, then Monster#isDarkEnoughToSpawn without the dice or the hour. */
     public static SpawnLight at(Level level, BlockPos pos) {
@@ -30,7 +29,7 @@ public enum SpawnLight {
 
         DimensionType dimension = level.dimensionType();
         int blockLimit = dimension.monsterSpawnBlockLightLimit();
-        int darkest = dimension.monsterSpawnLightTest().maxInclusive();
+        int darkest = dimension.monsterSpawnLightTest().getMaxValue();
         int blockLight = level.getBrightness(LightLayer.BLOCK, pos);
         if ((blockLimit < 15 && blockLight > blockLimit) || blockLight > darkest) {
             return NEVER;

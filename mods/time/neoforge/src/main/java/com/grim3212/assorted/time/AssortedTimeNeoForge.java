@@ -2,6 +2,7 @@ package com.grim3212.assorted.time;
 
 import com.grim3212.assorted.time.client.data.TimeLanguageProvider;
 import com.grim3212.assorted.time.client.data.TimeManualProvider;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -20,10 +21,11 @@ public class AssortedTimeNeoForge {
     }
 
     /** Client datagen: models, the language file and the manual, written into common for both loaders. */
-    private void gatherClientData(final GatherDataEvent.Client event) {
-        PackOutput packOutput = event.getGenerator().getPackOutput();
+    private void gatherClientData(final GatherDataEvent event) {
+        DataGenerator generator = event.getGenerator();
+        PackOutput packOutput = generator.getPackOutput();
 
-        event.addProvider(new TimeLanguageProvider(packOutput));
-        event.addProvider(new TimeManualProvider(packOutput));
+        generator.addProvider(event.includeClient(), new TimeLanguageProvider(packOutput));
+        generator.addProvider(event.includeClient(), new TimeManualProvider(packOutput));
     }
 }

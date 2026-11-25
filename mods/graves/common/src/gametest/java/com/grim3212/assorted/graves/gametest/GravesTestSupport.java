@@ -1,18 +1,20 @@
 package com.grim3212.assorted.graves.gametest;
 
+import com.grim3212.assorted.graves.common.block.entity.GraveBlockEntity;
 import com.grim3212.assorted.lib.test.TestSupport;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.gametest.framework.GameTestAssertException;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.network.protocol.game.ServerboundPlayerLoadedPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * Helpers and constants shared by Assorted Graves's gametest classes, which import them statically,
@@ -27,12 +29,11 @@ final class GravesTestSupport {
     static final BlockPos CENTRE = new BlockPos(4, 1, 4);
 
     /**
-     * A survival player standing on the floor at {@code rel} who can be hurt. Until its client says it has
-     * loaded, a new player is immune to everything, /kill included.
+     * A survival player standing on the floor at {@code rel} who can be hurt: a new player is immune to
+     * most damage for its first three seconds.
      */
     static ServerPlayer mortalPlayer(GameTestHelper helper, BlockPos rel) {
-        ServerPlayer player = TestSupport.survivalPlayer(helper);
-        player.connection.handleAcceptPlayerLoad(new ServerboundPlayerLoadedPacket());
+        ServerPlayer player = TestSupport.mortalPlayer(helper, ItemStack.EMPTY);
         TestSupport.stand(helper, player, rel.below());
         return player;
     }
@@ -41,6 +42,15 @@ final class GravesTestSupport {
     static InteractionResult use(GameTestHelper helper, ServerPlayer player, BlockPos rel) {
         return player.gameMode.useItemOn(player, helper.getLevel(), ItemStack.EMPTY, InteractionHand.MAIN_HAND,
                 TestSupport.hitSide(helper.absolutePos(rel), Direction.SOUTH));
+    }
+
+    /** The grave at a relative {@code rel}, failing the test if there is none. */
+    static GraveBlockEntity graveAt(GameTestHelper helper, BlockPos rel) {
+        BlockEntity blockEntity = helper.getBlockEntity(rel);
+        if (blockEntity instanceof GraveBlockEntity grave) {
+            return grave;
+        }
+        throw new GameTestAssertException("expected a grave at " + rel + ", found " + blockEntity);
     }
 
     static Holder<Enchantment> enchantment(GameTestHelper helper, ResourceKey<Enchantment> key) {

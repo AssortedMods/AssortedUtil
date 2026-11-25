@@ -2,19 +2,18 @@ package com.grim3212.assorted.graves.common.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
-import net.minecraft.world.ItemStackWithSlot;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +27,7 @@ import java.util.UUID;
  */
 public class GraveBlockEntity extends BlockEntity {
 
-    private final List<ItemStackWithSlot> items = new ArrayList<>();
+    private final List<GraveItem> items = new ArrayList<>();
     private int experience;
     private @Nullable UUID owner;
     private String ownerName = "";
@@ -38,9 +37,9 @@ public class GraveBlockEntity extends BlockEntity {
         super(GravesBlockEntityTypes.GRAVE.get(), pos, state);
     }
 
-    public void fill(Player player, List<ItemStackWithSlot> items, int experience, long deathTime) {
+    public void fill(Player player, List<GraveItem> items, int experience, long deathTime) {
         this.owner = player.getUUID();
-        this.ownerName = player.getGameProfile().name();
+        this.ownerName = player.getGameProfile().getName();
         this.items.clear();
         this.items.addAll(items);
         this.experience = experience;
@@ -58,7 +57,7 @@ public class GraveBlockEntity extends BlockEntity {
         this.setChanged();
     }
 
-    public List<ItemStackWithSlot> getItems() {
+    public List<GraveItem> getItems() {
         return List.copyOf(this.items);
     }
 
@@ -78,10 +77,10 @@ public class GraveBlockEntity extends BlockEntity {
         return this.deathTime;
     }
 
-    @Override
-    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
-        if (this.level instanceof ServerLevel serverLevel) {
-            for (ItemStackWithSlot item : this.items) {
+    /** Spills what is left on the ground, called by the block as it is removed, while this still exists. */
+    public void onBlockRemoved(Level level, BlockPos pos) {
+        if (level instanceof ServerLevel serverLevel) {
+            for (GraveItem item : this.items) {
                 Containers.dropItemStack(serverLevel, pos.getX(), pos.getY(), pos.getZ(), item.stack());
             }
             if (this.experience > 0) {
@@ -93,38 +92,44 @@ public class GraveBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        ValueOutput.TypedOutputList<ItemStackWithSlot> list = output.list("Items", ItemStackWithSlot.CODEC);
-        this.items.forEach(list::add);
-        output.putInt("Experience", this.experience);
-        this.saveOwner(output);
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        ListTag list = new ListTag();
+        for (GraveItem item : this.items) {
+            list.add(item.save(registries));
+        }
+        tag.put("Items", list);
+        tag.putInt("Experience", this.experience);
+        this.saveOwner(tag);
     }
 
-    private void saveOwner(ValueOutput output) {
-        output.storeNullable("Owner", UUIDUtil.CODEC, this.owner);
-        output.putString("OwnerName", this.ownerName);
-        output.putLong("DeathTime", this.deathTime);
+    private void saveOwner(CompoundTag tag) {
+        if (this.owner != null) {
+            tag.putUUID("Owner", this.owner);
+        }
+        tag.putString("OwnerName", this.ownerName);
+        tag.putLong("DeathTime", this.deathTime);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
         this.items.clear();
-        input.listOrEmpty("Items", ItemStackWithSlot.CODEC).forEach(this.items::add);
-        this.experience = input.getIntOr("Experience", 0);
-        this.owner = input.read("Owner", UUIDUtil.CODEC).orElse(null);
-        this.ownerName = input.getStringOr("OwnerName", "");
-        this.deathTime = input.getLongOr("DeathTime", 0L);
+        ListTag list = tag.getList("Items", Tag.TAG_COMPOUND);
+        for (int i = 0; i < list.size(); i++) {
+            GraveItem.load(list.getCompound(i), registries).ifPresent(this.items::add);
+        }
+        this.experience = tag.getInt("Experience");
+        this.owner = tag.hasUUID("Owner") ? tag.getUUID("Owner") : null;
+        this.ownerName = tag.getString("OwnerName");
+        this.deathTime = tag.getLong("DeathTime");
     }
 
     /** The headstone only needs who and when; the items stay on the server. */
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag tag = new CompoundTag();
-        tag.storeNullable("Owner", UUIDUtil.CODEC, this.owner);
-        tag.putString("OwnerName", this.ownerName);
-        tag.putLong("DeathTime", this.deathTime);
+        this.saveOwner(tag);
         return tag;
     }
 

@@ -4,7 +4,6 @@ import com.grim3212.assorted.lib.test.TestSupport;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.network.protocol.game.ServerboundPlayerLoadedPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -26,12 +25,11 @@ final class DoubleDoorsTestSupport {
     static final BlockPos CENTRE = new BlockPos(4, 1, 4);
 
     /**
-     * A survival player standing on the floor at {@code rel} who can be hurt. Until its client says it has
-     * loaded, a new player is immune to everything, /kill included.
+     * A survival player standing on the floor at {@code rel} who can be hurt: a new player is immune to
+     * most damage for its first three seconds.
      */
     static ServerPlayer mortalPlayer(GameTestHelper helper, BlockPos rel) {
-        ServerPlayer player = TestSupport.survivalPlayer(helper);
-        player.connection.handleAcceptPlayerLoad(new ServerboundPlayerLoadedPacket());
+        ServerPlayer player = TestSupport.mortalPlayer(helper, ItemStack.EMPTY);
         TestSupport.stand(helper, player, rel.below());
         return player;
     }

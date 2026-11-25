@@ -19,6 +19,7 @@ public final class TimeGameTests {
     /** Every test in this mod, named once, so both loaders register the same set. */
     public static void forEach(BiConsumer<String, Consumer<GameTestHelper>> out) {
         SmokeTests.register(out);
+        TimePanelTests.register(out);
         CommonTests.register(out, Constants.MOD_ID);
     }
 }

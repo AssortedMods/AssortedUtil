@@ -2,12 +2,12 @@ package com.grim3212.assorted.graves.gametest;
 
 import com.grim3212.assorted.graves.common.block.GravesBlocks;
 import com.grim3212.assorted.graves.common.block.entity.GraveBlockEntity;
+import com.grim3212.assorted.graves.common.block.entity.GraveItem;
 import com.grim3212.assorted.graves.common.grave.Graves;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.ItemStackWithSlot;
-import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -60,18 +60,18 @@ final class GraveTests {
         player.experienceProgress = 0.5F;
         int experience = Graves.totalExperience(player);
 
-        player.kill(helper.getLevel());
+        player.kill();
 
         helper.assertBlockPresent(GravesBlocks.GRAVE.get(), CENTRE);
-        GraveBlockEntity grave = helper.getBlockEntity(CENTRE, GraveBlockEntity.class);
-        List<ItemStackWithSlot> items = grave.getItems();
+        GraveBlockEntity grave = graveAt(helper, CENTRE);
+        List<GraveItem> items = grave.getItems();
         helper.assertValueEqual(items.size(), 4, "stacks in the grave");
         helper.assertTrue(items.stream().noneMatch(item -> item.stack().is(Items.IRON_BOOTS)), "Curse of Vanishing boots went into the grave instead of vanishing");
         helper.assertTrue(items.stream().anyMatch(item -> item.slot() == HEAD && item.stack().is(Items.DIAMOND_HELMET)), "the helmet was not kept against its head slot");
         helper.assertValueEqual(grave.getExperience(), experience, "experience in the grave");
         helper.assertTrue(inventory.isEmpty(), "the dead player still holds " + inventory.getItem(0));
-        helper.assertEntityNotPresent(EntityTypes.ITEM);
-        helper.assertEntityNotPresent(EntityTypes.EXPERIENCE_ORB);
+        helper.assertEntityNotPresent(EntityType.ITEM);
+        helper.assertEntityNotPresent(EntityType.EXPERIENCE_ORB);
         // Or clearing the box at the end spills it into the next test.
         grave.clearContents();
         helper.succeed();
@@ -83,7 +83,7 @@ final class GraveTests {
         player.getInventory().setItem(0, new ItemStack(Items.STONE, 10));
         player.getInventory().setItem(Inventory.SLOT_OFFHAND, new ItemStack(Items.TOTEM_OF_UNDYING));
 
-        player.hurtServer(helper.getLevel(), helper.getLevel().damageSources().generic(), 1000.0F);
+        player.hurt(helper.getLevel().damageSources().generic(), 1000.0F);
 
         helper.assertTrue(player.isAlive(), "the totem did not save the player");
         helper.assertBlockNotPresent(GravesBlocks.GRAVE.get(), CENTRE);
@@ -103,7 +103,7 @@ final class GraveTests {
         helper.assertTrue(owner.getInventory().getItem(HEAD).is(Items.DIAMOND_HELMET), "the helmet was not put back on");
         helper.assertValueEqual(Graves.totalExperience(owner), 50, "experience given back");
         helper.assertTrue(grave.getItems().isEmpty(), "the grave still holds items after being emptied");
-        helper.assertEntityNotPresent(EntityTypes.ITEM);
+        helper.assertEntityNotPresent(EntityType.ITEM);
         helper.succeed();
     }
 
@@ -129,7 +129,7 @@ final class GraveTests {
 
         helper.assertItemEntityCountIs(Items.STONE, CENTRE.north(), 2.0D, 10);
         helper.assertItemEntityCountIs(Items.DIAMOND_HELMET, CENTRE.north(), 2.0D, 1);
-        helper.assertEntityPresent(EntityTypes.EXPERIENCE_ORB);
+        helper.assertEntityPresent(EntityType.EXPERIENCE_ORB);
         helper.succeed();
     }
 
@@ -170,8 +170,8 @@ final class GraveTests {
     /** A grave just north of the centre, as a death would leave it: stone in hotbar slot 3 and a helmet on. */
     private static GraveBlockEntity placeGrave(GameTestHelper helper, ServerPlayer owner, int experience) {
         helper.setBlock(CENTRE.north(), GravesBlocks.GRAVE.get());
-        GraveBlockEntity grave = helper.getBlockEntity(CENTRE.north(), GraveBlockEntity.class);
-        grave.fill(owner, List.of(new ItemStackWithSlot(3, new ItemStack(Items.STONE, 10)), new ItemStackWithSlot(HEAD, new ItemStack(Items.DIAMOND_HELMET))),
+        GraveBlockEntity grave = graveAt(helper, CENTRE.north());
+        grave.fill(owner, List.of(new GraveItem(3, new ItemStack(Items.STONE, 10)), new GraveItem(HEAD, new ItemStack(Items.DIAMOND_HELMET))),
                 experience, System.currentTimeMillis());
         return grave;
     }

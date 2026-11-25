@@ -7,6 +7,7 @@ import com.grim3212.assorted.graves.GravesCommonMod;
 import com.grim3212.assorted.graves.common.block.GraveBlock;
 import com.grim3212.assorted.graves.common.block.GravesBlocks;
 import com.grim3212.assorted.graves.common.block.entity.GraveBlockEntity;
+import com.grim3212.assorted.graves.common.block.entity.GraveItem;
 import com.grim3212.assorted.lib.util.BlockPosUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -15,8 +16,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.util.Prediction;
-import net.minecraft.world.ItemStackWithSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -24,7 +23,7 @@ import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gamerules.GameRules;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,18 +41,18 @@ public final class Graves {
 
     /** Moves what the player would drop into a new grave near them, and returns where, or null if nothing was moved. */
     public static @Nullable BlockPos dig(ServerPlayer player) {
-        ServerLevel level = player.level();
-        if (player.isSpectator() || level.getGameRules().get(GameRules.KEEP_INVENTORY)) {
+        ServerLevel level = player.serverLevel();
+        if (player.isSpectator() || level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
             return null;
         }
 
         Inventory inventory = player.getInventory();
-        List<ItemStackWithSlot> items = new ArrayList<>();
+        List<GraveItem> items = new ArrayList<>();
         for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
             ItemStack stack = inventory.getItem(slot);
             // Curse of Vanishing: vanilla destroys these right after, and a grave must not save them.
             if (!stack.isEmpty() && !EnchantmentHelper.has(stack, EnchantmentEffectComponents.PREVENT_EQUIPMENT_DROP)) {
-                items.add(new ItemStackWithSlot(slot, stack));
+                items.add(new GraveItem(slot, stack));
             }
         }
 
@@ -64,7 +63,7 @@ public final class Graves {
 
         BlockPos pos = findSpot(level, player.blockPosition(), GravesCommonMod.COMMON_CONFIG.gravesSearchRadius.get());
         if (pos == null) {
-            Constants.LOG.info("No room for {}'s grave near {}, their items drop instead", player.getPlainTextName(), player.blockPosition());
+            Constants.LOG.info("No room for {}'s grave near {}, their items drop instead", player.getName().getString(), player.blockPosition());
             player.sendSystemMessage(Component.translatable("message.assortedgraves.grave.no_room"));
             return null;
         }
@@ -77,7 +76,7 @@ public final class Graves {
         }
 
         graveEntity.fill(player, items, experience, System.currentTimeMillis());
-        for (ItemStackWithSlot item : items) {
+        for (GraveItem item : items) {
             inventory.setItem(item.slot(), ItemStack.EMPTY);
         }
         if (experience > 0) {
@@ -94,7 +93,7 @@ public final class Graves {
     /** The nearest block the grave can replace, within the world; the death spot itself first. */
     public static @Nullable BlockPos findSpot(ServerLevel level, BlockPos origin, int radius) {
         // Died in the void or above the build limit: the nearest height a block can go.
-        BlockPos start = new BlockPos(origin.getX(), Mth.clamp(origin.getY(), level.getMinY(), level.getMaxY()), origin.getZ());
+        BlockPos start = new BlockPos(origin.getX(), Mth.clamp(origin.getY(), level.getMinBuildHeight(), level.getMaxBuildHeight() - 1), origin.getZ());
         for (BlockPos pos : BlockPosUtil.withinManhattan(start, radius, radius, radius)) {
             if (canHold(level, pos)) {
                 return pos.immutable();
@@ -115,16 +114,16 @@ public final class Graves {
 
     /** Gives back what the grave holds and removes it. The owner's things go back into the slots they came from. */
     public static void restore(ServerPlayer player, GraveBlockEntity grave) {
-        List<ItemStackWithSlot> items = grave.getItems();
+        List<GraveItem> items = grave.getItems();
         int experience = grave.getExperience();
         boolean owner = grave.isOwner(player);
         grave.clearContents();
 
         Inventory inventory = player.getInventory();
         List<ItemStack> leftovers = new ArrayList<>();
-        for (ItemStackWithSlot item : items) {
+        for (GraveItem item : items) {
             // Someone else's armour goes into the pack, not onto them: it might carry Curse of Binding.
-            boolean sameSlot = (owner || item.slot() < Inventory.INVENTORY_SIZE) && item.isValidInContainer(inventory.getContainerSize());
+            boolean sameSlot = (owner || item.slot() < Inventory.INVENTORY_SIZE) && item.slot() >= 0 && item.slot() < inventory.getContainerSize();
             if (sameSlot && inventory.getItem(item.slot()).isEmpty()) {
                 inventory.setItem(item.slot(), item.stack());
             } else {
@@ -133,7 +132,7 @@ public final class Graves {
         }
         for (ItemStack stack : leftovers) {
             if (!inventory.add(stack) && !stack.isEmpty()) {
-                player.drop(stack, false, Prediction.SERVER_ONLY);
+                player.drop(stack, false, false);
             }
         }
 
@@ -141,7 +140,7 @@ public final class Graves {
             player.giveExperiencePoints(experience);
         }
 
-        ServerLevel level = player.level();
+        ServerLevel level = player.serverLevel();
         BlockPos pos = grave.getBlockPos();
         level.removeBlock(pos, false);
         level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.4F, 1.0F);

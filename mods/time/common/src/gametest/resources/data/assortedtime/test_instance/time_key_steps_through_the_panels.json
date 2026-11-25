@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assortedtime:time_key_steps_through_the_panels",
+  "structure": "assortedtime:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

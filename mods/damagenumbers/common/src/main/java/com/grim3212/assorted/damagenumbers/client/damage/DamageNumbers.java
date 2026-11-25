@@ -7,21 +7,18 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2LongOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,6 +76,7 @@ public final class DamageNumbers {
 
         long now = level.getGameTime();
         double range = DamageNumbersClient.CONFIG.damageNumbersRange.get();
+        boolean showSource = DamageNumbersClient.CONFIG.damageNumbersShowSource.get();
         Int2FloatOpenHashMap health = new Int2FloatOpenHashMap();
         for (Entity entity : level.entitiesForRendering()) {
             if (!(entity instanceof LivingEntity living) || living.distanceToSqr(player) > range * range) {
@@ -100,9 +98,9 @@ public final class DamageNumbers {
             if (change < 0.0F) {
                 DamageSource source = now - recentSourceTimes.getOrDefault(living.getId(), Long.MIN_VALUE / 2) <= SOURCE_MEMORY_TICKS ? recentSources.get(living.getId()) : null;
                 DamageKind kind = DamageKind.of(source);
-                spawn(minecraft, level, living, "-" + DamagePopup.amount(-change), label(kind, source), kind.color(source));
+                spawn(minecraft, level, living, DamagePopup.text(change, DamageKind.describe(kind, source), showSource), kind.color(source));
             } else if (DamageNumbersClient.CONFIG.damageNumbersShowHealing.get()) {
-                spawn(minecraft, level, living, "+" + DamagePopup.amount(change), DamageKind.HEALING.label(), DamageKind.HEALING.color());
+                spawn(minecraft, level, living, DamagePopup.text(change, DamageKind.HEALING.label(), showSource), DamageKind.HEALING.color());
             }
         }
         lastHealth = health;
@@ -115,14 +113,9 @@ public final class DamageNumbers {
         }
     }
 
-    private static void spawn(Minecraft minecraft, ClientLevel level, LivingEntity entity, String amount, Component label, int color) {
-        MutableComponent text = Component.literal(amount);
-        if (DamageNumbersClient.CONFIG.damageNumbersShowSource.get()) {
-            text.append(" (").append(label).append(")");
-        }
-
+    private static void spawn(Minecraft minecraft, ClientLevel level, LivingEntity entity, Component text, int color) {
         // Out in front of the creature on the viewer's side, or its own head hides the number.
-        Vec3 toViewer = minecraft.gameRenderer.mainCamera().position().subtract(entity.position()).multiply(1.0D, 0.0D, 1.0D);
+        Vec3 toViewer = minecraft.gameRenderer.getMainCamera().getPosition().subtract(entity.position()).multiply(1.0D, 0.0D, 1.0D);
         Vec3 front = toViewer.lengthSqr() < 1.0E-4D ? Vec3.ZERO : toViewer.normalize().scale(entity.getBbWidth() / 2.0D + 0.3D);
 
         float offset = -minecraft.font.width(text) / 2.0F;
@@ -130,41 +123,26 @@ public final class DamageNumbers {
                 entity.getX() + front.x, entity.getY() + entity.getBbHeight() * 0.8D, entity.getZ() + front.z, entity.getY() + 0.25D, level.getRandom()));
     }
 
-    /** A player's hit names the weapon, as 1.2.5 did; a creature's names the creature, and a projectile itself. */
-    private static Component label(DamageKind kind, @Nullable DamageSource source) {
-        if (source != null && kind == DamageKind.MELEE && source.getEntity() != null) {
-            if (source.getEntity() instanceof Player attacker) {
-                ItemStack weapon = attacker.getMainHandItem();
-                return weapon.isEmpty() ? kind.label() : weapon.getHoverName();
-            }
-            return source.getEntity().getName();
-        }
-        if (source != null && kind == DamageKind.PROJECTILE && source.getDirectEntity() != null) {
-            return source.getDirectEntity().getName();
-        }
-        return kind.label(source);
-    }
-
-    public static void submit(PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
+    public static void render(PoseStack poseStack, MultiBufferSource bufferSource, Camera camera, float partialTick) {
         if (popups.isEmpty()) {
             return;
         }
 
-        float partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
-        Vec3 cam = camera.pos;
+        Font font = Minecraft.getInstance().font;
+        Vec3 cam = camera.getPosition();
         for (DamagePopup popup : popups) {
             int alpha = popup.alpha(partialTick);
-            if (alpha <= 0) {
+            // 1.21.1's font draws a colour with almost no alpha fully opaque, so the last frames are skipped.
+            if (alpha < 4) {
                 continue;
             }
 
             poseStack.pushPose();
             poseStack.translate(Mth.lerp(partialTick, popup.lastX, popup.x) - cam.x, Mth.lerp(partialTick, popup.lastY, popup.y) - cam.y, Mth.lerp(partialTick, popup.lastZ, popup.z) - cam.z);
-            poseStack.rotate(camera.orientation);
+            poseStack.mulPose(camera.rotation());
             poseStack.scale(TEXT_SCALE, -TEXT_SCALE, TEXT_SCALE);
             // 1.2.5 drew the number four times around itself in the background colour; an outline is the same look.
-            collector.submitText(poseStack, popup.offset, 0.0F, popup.text, false, Font.DisplayMode.NORMAL, LightCoordsUtil.FULL_BRIGHT,
-                    alpha << 24 | popup.color, 0, alpha << 24);
+            font.drawInBatch8xOutline(popup.text, popup.offset, 0.0F, alpha << 24 | popup.color, alpha << 24, poseStack.last().pose(), bufferSource, LightTexture.FULL_BRIGHT);
             poseStack.popPose();
         }
     }
